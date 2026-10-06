@@ -1,4 +1,4 @@
-import { languagePreference } from './labels'
+import { languagePreference, PREFERRED_LANGUAGES } from './labels'
 
 export interface Platform {
   readonly id: string
@@ -20,8 +20,19 @@ export interface PlatformAvailability {
   readonly offers: readonly { readonly language: string | null; readonly url: string }[]
 }
 
+export function groupAvailabilityByPlatform(
+  availability: readonly Availability[],
+  preferredLanguages: readonly string[] = PREFERRED_LANGUAGES,
+): PlatformAvailability[] {
+  const weight = (language: string | null) => -languagePreference(language, preferredLanguages)
+  const compareOffers = (a: { language: string | null }, b: { language: string | null }) =>
+    weight(b.language) - weight(a.language) || (a.language ?? '').localeCompare(b.language ?? '')
+  const comparePlatforms = (a: PlatformAvailability, b: PlatformAvailability) => {
+    const aWeight = Math.max(...a.offers.map(offer => weight(offer.language)))
+    const bWeight = Math.max(...b.offers.map(offer => weight(offer.language)))
+    return bWeight - aWeight || b.offers.length - a.offers.length || a.platformName.localeCompare(b.platformName)
+  }
 
-export function groupAvailabilityByPlatform(availability: readonly Availability[]): PlatformAvailability[] {
   const groups = new Map<string, { platformName: string; offers: Map<string, { language: string | null; url: string }> }>()
 
   for (const entry of availability) {
@@ -54,20 +65,6 @@ export function mergeAvailability(...sources: readonly (readonly Availability[])
 
 export function primaryOffer(platform: PlatformAvailability): { language: string | null; url: string } | undefined {
   return platform.offers[0]
-}
-
-function compareOffers(a: { language: string | null }, b: { language: string | null }): number {
-  return languageWeight(b.language) - languageWeight(a.language) || (a.language ?? '').localeCompare(b.language ?? '')
-}
-
-function comparePlatforms(a: PlatformAvailability, b: PlatformAvailability): number {
-  const aWeight = Math.max(...a.offers.map(offer => languageWeight(offer.language)))
-  const bWeight = Math.max(...b.offers.map(offer => languageWeight(offer.language)))
-  return bWeight - aWeight || b.offers.length - a.offers.length || a.platformName.localeCompare(b.platformName)
-}
-
-function languageWeight(language: string | null): number {
-  return -languagePreference(language)
 }
 
 function normalizeUrlForComparison(url: string): string {

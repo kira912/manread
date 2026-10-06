@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SearchFacets } from '#shared/domain/discovery'
-import { genreLabel, languageLabel } from '#shared/domain/labels'
+import { genreLabel, languageLabel, languagePreference } from '#shared/domain/labels'
 import { MANGA_STATUSES, originLabel, statusLabel, type MangaOrigin, type MangaStatus } from '#shared/domain/manga'
 import { SEARCH_LIMITS, SEARCH_SORTS, type SearchQuery, type SearchSort } from '#shared/domain/search'
 
@@ -30,6 +30,13 @@ const sort = computed({
   get: () => props.query.sort,
   set: value => update({ sort: value }),
 })
+
+const preferredLanguages = usePreferredLanguages()
+const visibleLanguages = computed(() =>
+  props.facets.languages
+    .toSorted((a, b) => languagePreference(a, preferredLanguages.value) - languagePreference(b, preferredLanguages.value))
+    .slice(0, VISIBLE_LANGUAGES),
+)
 
 const visiblePlatforms = computed(() => {
   const needle = platformFilter.value.trim().toLowerCase()
@@ -145,7 +152,7 @@ function parseYear(value: string): number | null {
       <legend class="label">Langue</legend>
       <div class="filters__chips">
         <button
-          v-for="language in facets.languages.slice(0, VISIBLE_LANGUAGES)"
+          v-for="language in visibleLanguages"
           :key="language"
           type="button"
           class="chip"

@@ -4,7 +4,8 @@ import { languageLabel } from '#shared/domain/labels'
 import type { MangaId } from '#shared/domain/manga'
 
 const props = defineProps<{ mangaId: MangaId; title: string; availability: readonly Availability[]; degraded: boolean }>()
-const platforms = computed(() => groupAvailabilityByPlatform(props.availability))
+const preferredLanguages = usePreferredLanguages()
+const platforms = computed(() => groupAvailabilityByPlatform(props.availability, preferredLanguages.value))
 const { rememberPlatform, entryOf } = useLibrary()
 const entry = entryOf(() => props.mangaId)
 
