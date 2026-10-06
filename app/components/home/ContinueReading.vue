@@ -45,7 +45,7 @@ const entries = computed(() => (ready.value ? continueReading(library.value, CON
               :href="entry.preferredPlatform.url"
               target="_blank"
               rel="noopener noreferrer external"
-              @click="rememberOutbound({ mangaId: entry.manga.id, title: entry.manga.title, platformName: entry.preferredPlatform.name, nextChapter: entry.chapter + 1 })"
+              @click="openOfficialPlatform({ mangaId: entry.manga.id, title: entry.manga.title, platformName: entry.preferredPlatform.name, nextChapter: entry.chapter + 1 })"
             >
               Resume on {{ entry.preferredPlatform.name }}
               <UiIcon name="arrowUpRight" :size="16" />

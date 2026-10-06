@@ -90,7 +90,10 @@ async function choose(option: PaletteOption | undefined) {
     term.value = option.term
     return
   }
-  if (hasQuery.value) searchHistory.record(normalizeTerm(term.value))
+  if (hasQuery.value) {
+    searchHistory.record(normalizeTerm(term.value))
+    trackEvent('search', { source: 'palette', term: normalizeTerm(term.value) })
+  }
   palette.hide()
   await navigateTo(option.to)
 }
@@ -99,6 +102,7 @@ async function openFullResults() {
   const text = normalizeTerm(term.value)
   if (!text) return
   searchHistory.record(text)
+  trackEvent('search', { source: 'palette', term: text })
   palette.hide()
   await navigateTo(searchPageUrl(text))
 }

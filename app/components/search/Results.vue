@@ -15,6 +15,16 @@ watch([sentinelVisible, canAutoLoad], ([visible, allowed]) => {
   if (visible && allowed) void loadMore()
 })
 
+watch(
+  () => [status.value, items.value.length] as const,
+  ([currentStatus, count]) => {
+    if (import.meta.client && currentStatus === 'success' && count === 0 && props.query.text) {
+      trackEvent('search_no_results', { term: props.query.text })
+    }
+  },
+  { immediate: true },
+)
+
 const countLabel = computed(() => {
   if (total.value === null) return plural(items.value.length, 'title')
   return `${compactNumber(total.value)} ${total.value === 1 ? 'title' : 'titles'}`

@@ -4,6 +4,7 @@ import { COVER_RENDER_WIDTHS } from './shared/domain/manga'
 const isDev = process.env.NODE_ENV !== 'production'
 const isVercel = Boolean(process.env.VERCEL)
 const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+const umamiEnabled = Boolean(process.env.NUXT_PUBLIC_UMAMI_WEBSITE_ID)
 
 const ANILIST_IMAGE_ORIGIN = 'https://s4.anilist.co'
 
@@ -66,7 +67,11 @@ export default defineNuxtConfig({
     public: {
       siteUrl: vercelProductionUrl ? `https://${vercelProductionUrl}` : 'http://localhost:3000',
       siteName: 'Manread',
-      telemetrySampleRate: 1,
+      telemetrySampleRate: isVercel ? 0 : 1,
+      vercelInsights: isVercel,
+      umamiWebsiteId: '',
+      googleSiteVerification: '',
+      bingSiteVerification: '',
     },
   },
 
@@ -107,7 +112,11 @@ export default defineNuxtConfig({
         'style-src': ["'self'", "'unsafe-inline'"],
         'img-src': ["'self'", 'data:', ANILIST_IMAGE_ORIGIN],
         'font-src': ["'self'"],
-        'connect-src': isDev ? ["'self'", 'ws:', 'wss:'] : ["'self'"],
+        'connect-src': [
+          "'self'",
+          ...(isDev ? ['ws:', 'wss:'] : []),
+          ...(umamiEnabled ? ['https://gateway.umami.is', 'https://cloud.umami.is'] : []),
+        ],
         'manifest-src': ["'self'"],
         'worker-src': ["'none'"],
         'upgrade-insecure-requests': !isDev,

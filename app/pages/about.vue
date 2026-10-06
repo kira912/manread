@@ -9,7 +9,10 @@ const principles = [
   { title: 'We index. We never host.', body: 'Manread stores no chapters, pages or scans. Every reading link points to a publisher or a platform that holds the rights in that language.' },
   { title: 'Official sources only.', body: 'Availability comes from AniList’s moderated list of official streaming links. Unofficial and scanlation sites are never listed, and every link is validated before it is shown.' },
   { title: 'Your library stays yours.', body: 'Your library, progress and history live in this browser only. No account, no tracking profile. You can export them at any time from the library page.' },
-  { title: 'Measured, not watched.', body: 'We collect anonymous performance metrics (page speed) and crash reports to keep the site fast. They never contain what you read or search for.' },
+  {
+    title: 'Measured, not watched.',
+    body: 'We use cookieless, anonymous analytics (Vercel Web Analytics, Speed Insights and Umami) to count visits, measure page speed and see which features are used — such as searches, chapters read or platforms opened. No cookies, no cross-site tracking, no profile, and “Do Not Track” is respected.',
+  },
 ]
 </script>
 

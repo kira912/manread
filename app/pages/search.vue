@@ -58,7 +58,10 @@ function apply(next: SearchQuery) {
 
 function submit() {
   const text = draft.value.trim()
-  if (text) searchHistory.record(text)
+  if (text) {
+    searchHistory.record(text)
+    trackEvent('search', { source: 'page', term: text })
+  }
   void router.push({ query: toSearchUrlParams({ ...query.value, text, sort: text ? 'relevance' : 'popularity', page: 1 }) })
 }
 

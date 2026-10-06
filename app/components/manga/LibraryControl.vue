@@ -67,7 +67,7 @@ function choose(status: ReadingStatus) {
         :href="entry.preferredPlatform.url"
         target="_blank"
         rel="noopener noreferrer external"
-        @click="rememberOutbound({ mangaId: manga.id, title: manga.title, platformName: entry.preferredPlatform.name, nextChapter: entry.chapter + 1 })"
+        @click="openOfficialPlatform({ mangaId: manga.id, title: manga.title, platformName: entry.preferredPlatform.name, nextChapter: entry.chapter + 1 })"
       >
         Resume on {{ entry.preferredPlatform.name }} — ch. {{ entry.chapter + 1 }}
         <UiIcon name="arrowUpRight" :size="16" />

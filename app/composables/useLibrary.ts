@@ -48,12 +48,19 @@ export function useLibrary() {
     library: readonly(library),
     ready: readonly(ready),
     entryOf: (mangaId: MaybeRefOrGetter<MangaId>) => computed(() => getEntry(library.value, toValue(mangaId))),
-    setStatus: (manga: MangaSnapshot, status: ReadingStatus) =>
-      apply(current => setStatus(current, manga, status, now()), `${manga.title} → ${readingStatusLabel(status)}`),
+    setStatus: (manga: MangaSnapshot, status: ReadingStatus) => {
+      ensureHydrated()
+      const isNew = !getEntry(library.value, manga.id)
+      const saved = apply(current => setStatus(current, manga, status, now()), `${manga.title} → ${readingStatusLabel(status)}`)
+      if (saved && isNew) trackEvent('library_add', { status, manga: manga.title })
+      return saved
+    },
     toggleFavorite: (manga: MangaSnapshot) => {
       ensureHydrated()
       const favorite = !getEntry(library.value, manga.id)?.favorite
-      return apply(current => setFavorite(current, manga, favorite, now()), favorite ? `Added ${manga.title} to favorites` : `Removed from favorites`)
+      const saved = apply(current => setFavorite(current, manga, favorite, now()), favorite ? `Added ${manga.title} to favorites` : `Removed from favorites`)
+      if (saved) trackEvent('favorite', { enabled: favorite, manga: manga.title })
+      return saved
     },
     markChapterRead: (manga: MangaSnapshot, chapterNumber: number) => apply(current => recordChapterRead(current, manga, chapterNumber, now())),
     setProgress: (mangaId: MangaId, chapter: number) => apply(current => recordProgress(current, mangaId, chapter, now())),

@@ -9,7 +9,7 @@ const entry = entryOf(() => props.mangaId)
 
 function remember(platformId: string, platformName: string, url: string) {
   rememberPlatform(props.mangaId, { id: platformId, name: platformName, url })
-  if (entry.value) rememberOutbound({ mangaId: props.mangaId, title: props.title, platformName, nextChapter: entry.value.chapter + 1 })
+  openOfficialPlatform({ mangaId: props.mangaId, title: props.title, platformName, nextChapter: entry.value ? entry.value.chapter + 1 : null })
 }
 </script>
 

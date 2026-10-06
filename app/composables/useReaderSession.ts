@@ -62,6 +62,7 @@ export function useReaderSession(readable: Ref<ReadableChapter>, manga: Ref<Mang
       resumedFrom.value = start
       page.value = start
       markChapterRead(toSnapshot(manga.value), chapter.value.number - 1)
+      trackEvent('reader_open', { manga: manga.value.title, chapter: chapter.value.number })
     },
     { immediate: true },
   )
@@ -74,6 +75,7 @@ export function useReaderSession(readable: Ref<ReadableChapter>, manga: Ref<Mang
     if (!chapterRecorded && isLastPage(current, pageCount.value)) {
       chapterRecorded = true
       markChapterRead(toSnapshot(manga.value), chapter.value.number)
+      trackEvent('chapter_complete', { manga: manga.value.title, chapter: chapter.value.number })
     }
 
     for (let offset = 1; offset <= PRELOAD_AHEAD; offset += 1) {

@@ -12,6 +12,20 @@ interface PendingReturn {
   readonly leftAt: number
 }
 
+export interface OfficialPlatformVisit {
+  readonly mangaId: MangaId
+  readonly title: string
+  readonly platformName: string
+  readonly nextChapter: number | null
+}
+
+export function openOfficialPlatform(visit: OfficialPlatformVisit) {
+  trackEvent('outbound_platform', { platform: visit.platformName, manga: visit.title })
+  if (visit.nextChapter !== null) {
+    rememberOutbound({ mangaId: visit.mangaId, title: visit.title, platformName: visit.platformName, nextChapter: visit.nextChapter })
+  }
+}
+
 export function rememberOutbound(visit: Omit<PendingReturn, 'leftAt'>) {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ ...visit, leftAt: Date.now() }))

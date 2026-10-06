@@ -148,12 +148,25 @@ Tokens are in `app/assets/css/tokens.css`, primitives in `app/components/ui/`.
 
 SSR for every public page; canonical URLs with 301s for wrong slugs; per-page titles, descriptions, Open Graph and Twitter cards; `ComicSeries`, `Person` and `WebSite` (SearchAction) JSON-LD; `/sitemap.xml` with the top titles and genre landing pages; `/robots.txt`. Filtered searches are `noindex`, while genre landing pages (`/genre/:slug`) are the indexable entry points.
 
-## Observability
+## Analytics & observability
 
+All analytics are free-tier, cookieless (no consent banner needed), and add no third-party requests unless configured.
+
+| What you learn | Tool | Setup |
+| --- | --- | --- |
+| Visitors, page views, referrers, countries, devices | **Vercel Web Analytics** | Vercel dashboard › project › *Analytics* › Enable. Active automatically on Vercel deployments. |
+| Real-user Core Web Vitals per page | **Vercel Speed Insights** | Vercel dashboard › *Speed Insights* › Enable. |
+| What people do (product events) | **Umami Cloud** (free tier) | Create a site on cloud.umami.is, set `NUXT_PUBLIC_UMAMI_WEBSITE_ID`, redeploy. Honours Do Not Track. |
+| Search visibility, queries, indexing | **Google Search Console** / **Bing Webmaster Tools** | Add the property with the meta-tag method; set `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` / `NUXT_PUBLIC_BING_SITE_VERIFICATION`; submit `/sitemap.xml`. |
+| Is the site up? | **UptimeRobot** or **Better Stack** (free) | HTTP monitor on `https://<domain>/api/health` (returns `degraded` when the catalog circuit is open). |
+| Server logs and errors | **Vercel Logs** | Built in. Structured JSON with request IDs; client errors are reported to the server and logged. |
+
+Product events (`app/composables/useAnalytics.ts`, typed): `search`, `search_no_results`, `library_add`, `favorite`, `reader_open`, `chapter_complete`, `outbound_platform`. Text values are trimmed to 60 characters. Events never include library contents, history or identifiers. On Vercel Pro, the same events also appear as Vercel custom events.
+
+Server side:
 - Structured JSON logs carry request IDs (`X-Request-Id`). Every API request is logged with route, status and duration.
-- Metrics cover provider requests, retries, failures, circuit transitions, cache hit/stale/miss, rejected items and URLs, rate limiting, Web Vitals and client errors.
-- `GET /api/health` reports provider circuit state; `GET /api/metrics` returns a snapshot with `Authorization: Bearer $NUXT_METRICS_TOKEN`.
-- Browser: Web Vitals (sampled) and client errors are sent via `sendBeacon`. Payloads contain the route name, never content.
+- Metrics cover provider requests, retries, failures, circuit transitions, cache hit/stale/miss, rejected items and URLs, rate limiting and client errors.
+- `GET /api/metrics` returns a snapshot with `Authorization: Bearer $NUXT_METRICS_TOKEN`. On serverless these counters are per instance; use them for spot checks, and the tools above for trends.
 
 ## Testing
 

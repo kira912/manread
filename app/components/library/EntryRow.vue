@@ -53,7 +53,7 @@ const atLastChapter = computed(() => props.entry.manga.chapters !== null && prop
           :href="entry.preferredPlatform.url"
           target="_blank"
           rel="noopener noreferrer external"
-          @click="rememberOutbound({ mangaId: entry.manga.id, title: entry.manga.title, platformName: entry.preferredPlatform.name, nextChapter: entry.chapter + 1 })"
+          @click="openOfficialPlatform({ mangaId: entry.manga.id, title: entry.manga.title, platformName: entry.preferredPlatform.name, nextChapter: entry.chapter + 1 })"
         >
           {{ entry.preferredPlatform.name }} <UiIcon name="arrowUpRight" :size="14" />
           <span class="visually-hidden">(opens in a new tab)</span>
