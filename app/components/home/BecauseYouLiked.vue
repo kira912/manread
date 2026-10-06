@@ -20,20 +20,20 @@ const items = computed(() => (data.value ?? []).filter(manga => !library.value.e
   <section v-if="seed" ref="root" class="page because" aria-labelledby="because-heading">
     <HomeSectionHeader
       marker="Yours"
-      :title="`Because you liked ${seed.manga.title}`"
+      :title="`Parce que vous avez aimé ${seed.manga.title}`"
       jp="おすすめ"
-      kicker="From your library"
+      kicker="D’après votre bibliothèque"
       heading-id="because-heading"
     />
     <UiErrorState
       v-if="status === 'error'"
-      title="Recommendations are taking a break"
-      message="We couldn't reach the catalog for suggestions."
+      title="Les recommandations font une pause"
+      message="Impossible de joindre le catalogue pour vos suggestions."
       @retry="execute()"
     />
     <MangaGridSkeleton v-else-if="status !== 'success'" :count="RECOMMENDATION_COUNT" />
     <MangaGrid v-else-if="items.length" :items="items" />
-    <p v-else class="because__empty">You've already saved everything we'd suggest. Impressive.</p>
+    <p v-else class="because__empty">Vous avez déjà tout ce que nous allions vous suggérer. Impressionnant.</p>
   </section>
 </template>
 

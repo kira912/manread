@@ -1,4 +1,3 @@
-import { isDomainError } from '#shared/domain/errors'
 import type { BrowserStore } from '~/infrastructure/storage/browser-store'
 
 const hydratedKeys = new Set<string>()
@@ -13,7 +12,7 @@ export function usePersistedState<T>(stateKey: string, store: BrowserStore<T>, f
     const outcome = store.load()
     state.value = outcome.value
     if (outcome.status === 'recovered') {
-      toast.push(`Your saved ${label} couldn't be read and was reset. A backup copy was kept on this device.`, { tone: 'error', durationMs: 8_000 })
+      toast.push(`Vos données (${label}) étaient illisibles et ont été réinitialisées. Une copie de sauvegarde a été conservée sur cet appareil.`, { tone: 'error', durationMs: 8_000 })
     }
     store.subscribe(value => {
       state.value = value
@@ -30,7 +29,7 @@ export function usePersistedState<T>(stateKey: string, store: BrowserStore<T>, f
       return true
     } catch (error) {
       state.value = previous
-      toast.push(isDomainError(error) ? `Couldn't save on this device — ${error.message.toLowerCase()}.` : "Couldn't save on this device.", { tone: 'error' })
+      toast.push('Impossible d’enregistrer sur cet appareil : le stockage du navigateur est plein ou bloqué.', { tone: 'error' })
       return false
     }
   }

@@ -76,13 +76,15 @@ export function resolveReaderSettings(preferences: ReaderPreferences, origin: Ma
   }
 }
 
+const chapterNumberFormatter = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 1 })
+
 export function chapterLabel(chapter: Pick<Chapter, 'number' | 'title'>): string {
-  const number = `Chapter ${formatChapterNumber(chapter.number)}`
+  const number = `Chapitre ${formatChapterNumber(chapter.number)}`
   return chapter.title ? `${number} — ${chapter.title}` : number
 }
 
 export function formatChapterNumber(number: number): string {
-  return Number.isInteger(number) ? String(number) : number.toFixed(1)
+  return chapterNumberFormatter.format(number)
 }
 
 export function adjacentChapters(chapters: readonly Chapter[], currentId: string): { previous: Chapter | null; next: Chapter | null } {

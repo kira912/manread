@@ -11,21 +11,21 @@ const isActive = (path: string) => (path === '/' ? route.path === '/' : route.pa
 
 <template>
   <header class="rail">
-    <NuxtLink to="/" class="rail__brand" aria-label="Manread, home">
+    <NuxtLink to="/" class="rail__brand" aria-label="Manread, accueil">
       <LayoutBrandMark />
     </NuxtLink>
 
-    <nav class="rail__nav" aria-label="Primary">
+    <nav class="rail__nav" aria-label="Navigation principale">
       <NuxtLink to="/" class="rail__link" :class="{ 'is-active': isActive('/') }" :aria-current="isActive('/') ? 'page' : undefined">
         Index
       </NuxtLink>
       <button type="button" class="rail__link" aria-keyshortcuts="Control+K Meta+K" @click="palette.show()">
-        Search <kbd class="rail__kbd">⌘K</kbd>
+        Recherche <kbd class="rail__kbd">⌘K</kbd>
       </button>
       <NuxtLink to="/library" class="rail__link" :class="{ 'is-active': isActive('/library') }" :aria-current="isActive('/library') ? 'page' : undefined">
-        Library
+        Bibliothèque
         <span v-if="readingCount" class="rail__count numeric">
-          {{ readingCount }}<span class="visually-hidden"> in progress</span>
+          {{ readingCount }}<span class="visually-hidden"> en cours de lecture</span>
         </span>
       </NuxtLink>
     </nav>

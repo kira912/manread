@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { creatorPath, principalCredits } from '#shared/domain/creator'
+import { creatorPath, creatorRoleLabel, principalCredits } from '#shared/domain/creator'
+import { genreLabel, genreSlug } from '#shared/domain/labels'
 import { toSnapshot } from '#shared/domain/library'
-import { mangaPath, originLabel, originLanguage, shortSynopsis } from '#shared/domain/manga'
-import { slugify } from '#shared/domain/slug'
+import { mangaPath, originLabel, originLanguage, shortSynopsis, statusLabel } from '#shared/domain/manga'
 
 definePageMeta({
   validate: route => typeof route.params.id === 'string' && /^[a-z0-9-]{1,40}$/.test(route.params.id),
 })
 
 const SYNOPSIS_PREVIEW_PARAGRAPHS = 2
-const SEO_DESCRIPTION_LENGTH = 220
 const MAX_ALT_TITLES = 4
 
 const route = useRoute()
@@ -21,7 +20,7 @@ const chapters = computed(() => chapterList.value.chapters)
 const resume = useResumeTarget(id, chapters)
 
 if (error.value?.statusCode === 404) {
-  throw createError({ statusCode: 404, statusMessage: 'Manga not found', fatal: true })
+  throw createError({ statusCode: 404, statusMessage: 'Titre introuvable', fatal: true })
 }
 
 const manga = computed(() => details.value?.manga)
@@ -74,15 +73,19 @@ onMounted(() => {
 const siteUrl = useSiteUrl()
 usePageSeo(() => {
   const current = manga.value
-  if (!current) return { title: 'Manga', description: 'Manga details', path: route.path, noindex: true }
+  if (!current) return { title: 'Manga', description: 'Fiche manga', path: route.path, noindex: true }
   const platforms = [...new Set(details.value?.availability.map(entry => entry.platformName))].slice(0, 3)
-  const where = platforms.length ? ` Read it legally on ${platforms.join(', ')}.` : ''
+  const readHere = chapters.value.length ? ' directement sur Manread' : ''
+  const where = platforms.length ? `Lire ${current.title} légalement${readHere} et sur ${platforms.join(', ')}.` : `${current.title}${readHere ? ` à lire${readHere}` : ''} : fiche, suivi de lecture et recommandations.`
+  const author = credits.value[0] ? ` de ${credits.value[0].name}` : ''
+  const since = current.startYear ? ` depuis ${current.startYear}` : ''
+  const genres = current.genres.length ? ` — ${genreList(current.genres, 3, ', ')}.` : '.'
   return {
-    title: `${current.title} — where to read`,
-    description: `${shortSynopsis(current.synopsis, SEO_DESCRIPTION_LENGTH)}${where}`,
+    title: `${current.title} — où le lire`,
+    description: `${where} ${originLabel(current.origin)}${author}, ${statusLabel(current.status).toLowerCase()}${since}${genres}`,
     path: mangaPath(current),
     image: current.cover.large,
-    imageAlt: `Cover of ${current.title}`,
+    imageAlt: `Couverture de ${current.title}`,
     type: 'book',
   }
 })
@@ -129,7 +132,7 @@ useJsonLd(() => {
       </aside>
 
       <header class="manga__head">
-        <nav class="manga__crumbs label" aria-label="Breadcrumb">
+        <nav class="manga__crumbs label" aria-label="Fil d’Ariane">
           <NuxtLink to="/">Index</NuxtLink>
           <span aria-hidden="true">/</span>
           <NuxtLink :to="`/search?origin=${manga.origin}`">{{ originLabel(manga.origin) }}</NuxtLink>
@@ -139,12 +142,12 @@ useJsonLd(() => {
 
         <h1 class="manga__title display">{{ manga.title }}</h1>
         <p v-if="altTitles.length" class="manga__alt">
-          <span class="visually-hidden">Also known as: </span>{{ altTitles.join(' · ') }}
+          <span class="visually-hidden">Autres titres : </span>{{ altTitles.join(' · ') }}
         </p>
 
         <p v-if="credits.length" class="manga__credits">
           <span v-for="credit in credits" :key="credit.creatorId" class="manga__credit">
-            <span class="label">{{ credit.roleLabel }}</span>
+            <span class="label">{{ creatorRoleLabel(credit) }}</span>
             <NuxtLink :to="creatorPath({ id: credit.creatorId, slug: credit.slug })" class="link-underline">{{ credit.name }}</NuxtLink>
           </span>
         </p>
@@ -152,7 +155,7 @@ useJsonLd(() => {
         <div class="manga__cta">
           <UiButton v-if="resume" variant="accent" :to="resume.to" icon-after="arrowRight">{{ resume.label }}</UiButton>
           <UiButton :variant="resume ? 'line' : 'accent'" to="#where-to-read" icon-after="arrowRight">
-            Where to read<template v-if="details?.availability.length"> · {{ new Set(details.availability.map(entry => entry.platformId)).size }}</template>
+            Où lire<template v-if="details?.availability.length"> · {{ new Set(details.availability.map(entry => entry.platformId)).size }}</template>
           </UiButton>
         </div>
 
@@ -164,14 +167,14 @@ useJsonLd(() => {
         <div v-if="manga.synopsis.length" class="manga__synopsis">
           <p v-for="(paragraph, index) in visibleSynopsis" :key="index">{{ paragraph }}</p>
           <button v-if="hasMoreSynopsis" type="button" class="manga__more label" :aria-expanded="synopsisExpanded" @click="synopsisExpanded = !synopsisExpanded">
-            {{ synopsisExpanded ? 'Show less' : 'Read the full synopsis' }}
+            {{ synopsisExpanded ? 'Réduire' : 'Lire tout le synopsis' }}
           </button>
         </div>
 
         <MangaFacts :manga="manga" />
 
         <div v-if="manga.genres.length || manga.tags.length" class="manga__tags">
-          <UiTag v-for="genre in manga.genres" :key="genre" tone="accent" :to="`/genre/${slugify(genre)}`">{{ genre }}</UiTag>
+          <UiTag v-for="genre in manga.genres" :key="genre" tone="accent" :to="`/genre/${genreSlug(genre)}`">{{ genreLabel(genre) }}</UiTag>
           <UiTag v-for="tag in manga.tags" :key="tag.name">{{ tag.name }}</UiTag>
         </div>
       </header>
@@ -191,16 +194,16 @@ useJsonLd(() => {
     </div>
 
     <section v-if="manga.relations.length" class="page manga__section" aria-labelledby="related-heading">
-      <HomeSectionHeader marker="↳" title="Same universe" jp="関連作品" kicker="Sequels, side stories, spin-offs" heading-id="related-heading" />
-      <HomeStrip :items="manga.relations.map(relation => relation.manga)" label="Related titles" />
+      <HomeSectionHeader marker="↳" title="Même univers" jp="関連作品" kicker="Suites, histoires parallèles, spin-offs" heading-id="related-heading" />
+      <HomeStrip :items="manga.relations.map(relation => relation.manga)" label="les titres liés" />
     </section>
 
     <section ref="recommendationsRoot" class="page manga__section" aria-labelledby="recommended-heading">
-      <HomeSectionHeader marker="→" title="If this stayed with you" jp="おすすめ" kicker="Recommended by readers" heading-id="recommended-heading" />
-      <UiErrorState v-if="recommendations.status.value === 'error'" message="Recommendations didn't load." @retry="recommendations.execute()" />
+      <HomeSectionHeader marker="→" title="Si vous avez aimé" jp="おすすめ" kicker="Recommandés par les lecteurs" heading-id="recommended-heading" />
+      <UiErrorState v-if="recommendations.status.value === 'error'" message="Les recommandations n’ont pas pu être chargées." @retry="recommendations.execute()" />
       <MangaGridSkeleton v-else-if="recommendations.status.value !== 'success'" :count="6" />
       <MangaGrid v-else-if="recommendations.data.value?.length" :items="recommendations.data.value" />
-      <p v-else class="manga__empty">Readers haven't recommended anything for this one yet.</p>
+      <p v-else class="manga__empty">Les lecteurs n’ont encore rien recommandé pour ce titre.</p>
     </section>
   </article>
 </template>

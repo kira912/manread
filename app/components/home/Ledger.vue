@@ -12,10 +12,10 @@ const maxFavourites = computed(() => Math.max(1, ...props.items.map(manga => man
       <thead>
         <tr>
           <th scope="col" class="label">Nº</th>
-          <th scope="col" class="label">Title</th>
+          <th scope="col" class="label">Titre</th>
           <th scope="col" class="label ledger__hide-sm">Type</th>
-          <th scope="col" class="label ledger__hide-sm">Year</th>
-          <th scope="col" class="label ledger__num">Followers</th>
+          <th scope="col" class="label ledger__hide-sm">Année</th>
+          <th scope="col" class="label ledger__num">Abonnés</th>
         </tr>
       </thead>
       <tbody>

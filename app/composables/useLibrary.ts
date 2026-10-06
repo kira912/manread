@@ -23,7 +23,7 @@ export const LIBRARY_STATE_KEY = 'library'
 export const LIBRARY_READY_KEY = 'library-ready'
 
 export function useLibrary() {
-  const { state: library, commit, ensureHydrated } = usePersistedState<Library>(LIBRARY_STATE_KEY, libraryStore, emptyLibrary, 'library')
+  const { state: library, commit, ensureHydrated } = usePersistedState<Library>(LIBRARY_STATE_KEY, libraryStore, emptyLibrary, 'bibliothèque')
   const ready = useState(LIBRARY_READY_KEY, () => false)
   const toast = useToast()
 
@@ -35,7 +35,7 @@ export function useLibrary() {
     try {
       next = operation(library.value)
     } catch (error) {
-      toast.push(isDomainError(error) ? error.message : 'That change could not be applied.', { tone: 'error' })
+      toast.push(isDomainError(error) ? error.message : 'Cette modification n’a pas pu être appliquée.', { tone: 'error' })
       return false
     }
     const saved = commit(next)
@@ -58,7 +58,7 @@ export function useLibrary() {
     toggleFavorite: (manga: MangaSnapshot) => {
       ensureHydrated()
       const favorite = !getEntry(library.value, manga.id)?.favorite
-      const saved = apply(current => setFavorite(current, manga, favorite, now()), favorite ? `Added ${manga.title} to favorites` : `Removed from favorites`)
+      const saved = apply(current => setFavorite(current, manga, favorite, now()), favorite ? `${manga.title} ajouté aux favoris` : `Retiré des favoris`)
       if (saved) trackEvent('favorite', { enabled: favorite, manga: manga.title })
       return saved
     },
@@ -70,15 +70,15 @@ export function useLibrary() {
       ensureHydrated()
       const { library: merged, added, updated } = mergeLibraries(library.value, incoming)
       const saved = commit(merged)
-      if (saved) toast.push(`Imported ${added} new and ${updated} updated titles`)
+      if (saved) toast.push(`Import terminé : ${added} nouveau(x) titre(s), ${updated} mis à jour`)
       return saved
     },
     remove: (mangaId: MangaId) => {
       ensureHydrated()
       const previous = library.value
-      const title = getEntry(previous, mangaId)?.manga.title ?? 'Title'
+      const title = getEntry(previous, mangaId)?.manga.title ?? 'Le titre'
       const removed = apply(current => removeEntry(current, mangaId))
-      if (removed) toast.push(`${title} removed from your library`, { action: { label: 'Undo', run: () => commit(previous) } })
+      if (removed) toast.push(`${title} a été retiré de votre bibliothèque`, { action: { label: 'Annuler', run: () => commit(previous) } })
       return removed
     },
   }

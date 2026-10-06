@@ -9,7 +9,7 @@ export function useReadingPositions() {
     READING_POSITIONS_STATE_KEY,
     readingPositionsStore,
     emptyReadingPositions,
-    'reading positions',
+    'positions de lecture',
   )
 
   return {

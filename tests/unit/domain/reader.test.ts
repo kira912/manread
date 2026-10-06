@@ -49,8 +49,8 @@ describe('chapters', () => {
   })
 
   it('labels chapters, including fractional numbers', () => {
-    expect(chapterLabel({ number: 10.5, title: 'Interlude' })).toBe('Chapter 10.5 — Interlude')
-    expect(chapterLabel({ number: 3, title: null })).toBe('Chapter 3')
+    expect(chapterLabel({ number: 10.5, title: 'Interlude' })).toBe('Chapitre 10,5 — Interlude')
+    expect(chapterLabel({ number: 3, title: null })).toBe('Chapitre 3')
   })
 
   it('clamps pages into range', () => {

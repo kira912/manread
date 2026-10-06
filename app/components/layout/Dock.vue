@@ -5,18 +5,18 @@ const isActive = (path: string) => (path === '/' ? route.path === '/' : route.pa
 </script>
 
 <template>
-  <nav class="dock" aria-label="Primary">
+  <nav class="dock" aria-label="Navigation principale">
     <NuxtLink to="/" class="dock__item" :aria-current="isActive('/') ? 'page' : undefined">
       <UiIcon name="index" />
       <span>Index</span>
     </NuxtLink>
     <button type="button" class="dock__item dock__item--search" @click="palette.show()">
       <span class="dock__search-glyph"><UiIcon name="search" /></span>
-      <span>Search</span>
+      <span>Recherche</span>
     </button>
     <NuxtLink to="/library" class="dock__item" :aria-current="isActive('/library') ? 'page' : undefined">
       <UiIcon name="library" />
-      <span>Library</span>
+      <span>Bibliothèque</span>
     </NuxtLink>
   </nav>
 </template>

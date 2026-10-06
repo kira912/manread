@@ -31,26 +31,26 @@ const selectedChapter = computed({
 <template>
   <div class="chrome" :class="{ 'is-visible': visible }" @focusin="emit('pin', true)" @focusout="emit('pin', false)" @pointerenter="emit('pin', true)" @pointerleave="emit('pin', false)">
     <header class="chrome__top">
-      <NuxtLink :to="backTo" class="chrome__icon" :aria-label="`Back to ${title}`">
+      <NuxtLink :to="backTo" class="chrome__icon" :aria-label="`Retour à ${title}`">
         <UiIcon name="arrowLeft" />
       </NuxtLink>
       <div class="chrome__titles">
         <p class="chrome__title">{{ title }}</p>
-        <label :for="chapterSelectId" class="visually-hidden">Chapter</label>
+        <label :for="chapterSelectId" class="visually-hidden">Chapitre</label>
         <select :id="chapterSelectId" v-model="selectedChapter" class="chrome__chapter">
           <option v-for="option in chapters" :key="option.id" :value="option.id">{{ chapterLabel(option) }}</option>
         </select>
       </div>
-      <button v-if="fullscreenSupported" type="button" class="chrome__icon" :aria-pressed="fullscreen" aria-label="Fullscreen" aria-keyshortcuts="F" @click="emit('toggleFullscreen')">
+      <button v-if="fullscreenSupported" type="button" class="chrome__icon" :aria-pressed="fullscreen" aria-label="Plein écran" aria-keyshortcuts="F" @click="emit('toggleFullscreen')">
         <UiIcon :name="fullscreen ? 'collapse' : 'expand'" />
       </button>
-      <button type="button" class="chrome__icon" aria-label="Reader settings" @click="emit('openSettings')">
+      <button type="button" class="chrome__icon" aria-label="Réglages du lecteur" @click="emit('openSettings')">
         <UiIcon name="filters" />
       </button>
     </header>
 
     <footer class="chrome__bottom">
-      <NuxtLink v-if="previousChapterTo" :to="previousChapterTo" class="chrome__icon" aria-label="Previous chapter" aria-keyshortcuts="[">
+      <NuxtLink v-if="previousChapterTo" :to="previousChapterTo" class="chrome__icon" aria-label="Chapitre précédent" aria-keyshortcuts="[">
         <UiIcon :name="direction === 'rtl' ? 'arrowRight' : 'arrowLeft'" />
       </NuxtLink>
       <span v-else class="chrome__icon chrome__icon--empty" aria-hidden="true" />
@@ -62,12 +62,12 @@ const selectedChapter = computed({
           :max="pageCount"
           :value="page + 1"
           :dir="direction"
-          :aria-valuetext="`Page ${page + 1} of ${pageCount}`"
+          :aria-valuetext="`Page ${page + 1} sur ${pageCount}`"
           @input="emit('seek', Number(($event.target as HTMLInputElement).value) - 1)"
         />
       </label>
       <span class="chrome__count numeric" aria-hidden="true">{{ page + 1 }} / {{ pageCount }}</span>
-      <NuxtLink v-if="nextChapterTo" :to="nextChapterTo" class="chrome__icon" aria-label="Next chapter" aria-keyshortcuts="]">
+      <NuxtLink v-if="nextChapterTo" :to="nextChapterTo" class="chrome__icon" aria-label="Chapitre suivant" aria-keyshortcuts="]">
         <UiIcon :name="direction === 'rtl' ? 'arrowLeft' : 'arrowRight'" />
       </NuxtLink>
       <span v-else class="chrome__icon chrome__icon--empty" aria-hidden="true" />

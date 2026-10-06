@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SearchFacets } from '#shared/domain/discovery'
+import { genreLabel, languageLabel } from '#shared/domain/labels'
 import { MANGA_STATUSES, originLabel, statusLabel, type MangaOrigin, type MangaStatus } from '#shared/domain/manga'
 import { SEARCH_LIMITS, SEARCH_SORTS, type SearchQuery, type SearchSort } from '#shared/domain/search'
 
@@ -9,12 +10,12 @@ const emit = defineEmits<{ change: [query: SearchQuery] }>()
 const VISIBLE_LANGUAGES = 8
 const ORIGINS: readonly MangaOrigin[] = ['JP', 'KR', 'CN']
 const SORT_LABELS: Record<SearchSort, string> = {
-  relevance: 'Best match',
-  popularity: 'Most popular',
-  score: 'Highest rated',
-  trending: 'Trending',
-  newest: 'Newest',
-  title: 'Title A–Z',
+  relevance: 'Pertinence',
+  popularity: 'Popularité',
+  score: 'Meilleure note',
+  trending: 'Tendance',
+  newest: 'Plus récents',
+  title: 'Titre A–Z',
 }
 
 const platformFilter = ref('')
@@ -54,13 +55,13 @@ function parseYear(value: string): number | null {
 </script>
 
 <template>
-  <form class="filters" aria-label="Search filters" @submit.prevent>
-    <UiSelect v-model="sort" label="Sort by" :options="sortOptions" />
+  <form class="filters" aria-label="Filtres de recherche" @submit.prevent>
+    <UiSelect v-model="sort" label="Trier par" :options="sortOptions" />
 
     <fieldset class="filters__group">
-      <legend class="label">Status</legend>
+      <legend class="label">Statut</legend>
       <div class="filters__chips">
-        <button type="button" class="chip" :aria-pressed="query.status === null" @click="update({ status: null })">Any</button>
+        <button type="button" class="chip" :aria-pressed="query.status === null" @click="update({ status: null })">Tous</button>
         <button
           v-for="status in MANGA_STATUSES"
           :key="status"
@@ -77,7 +78,7 @@ function parseYear(value: string): number | null {
     <fieldset class="filters__group">
       <legend class="label">Type</legend>
       <div class="filters__chips">
-        <button type="button" class="chip" :aria-pressed="query.origin === null" @click="update({ origin: null })">All</button>
+        <button type="button" class="chip" :aria-pressed="query.origin === null" @click="update({ origin: null })">Tous</button>
         <button
           v-for="origin in ORIGINS"
           :key="origin"
@@ -92,7 +93,7 @@ function parseYear(value: string): number | null {
     </fieldset>
 
     <fieldset v-if="!hideGenres && facets.genres.length" class="filters__group">
-      <legend class="label">Genres <span class="filters__hint">— all must match</span></legend>
+      <legend class="label">Genres <span class="filters__hint">— tous doivent correspondre</span></legend>
       <div class="filters__chips">
         <button
           v-for="genre in facets.genres"
@@ -102,30 +103,30 @@ function parseYear(value: string): number | null {
           :aria-pressed="query.genres.includes(genre)"
           @click="update({ genres: toggle(query.genres, genre, SEARCH_LIMITS.maxGenres) })"
         >
-          {{ genre }}
+          {{ genreLabel(genre) }}
         </button>
       </div>
     </fieldset>
 
     <fieldset class="filters__group">
-      <legend class="label">First published</legend>
+      <legend class="label">Première parution</legend>
       <div class="filters__years">
-        <label :for="`${idPrefix}-from`" class="visually-hidden">From year</label>
+        <label :for="`${idPrefix}-from`" class="visually-hidden">À partir de l’année</label>
         <input
           :id="`${idPrefix}-from`"
           class="filters__year numeric"
           inputmode="numeric"
-          placeholder="From"
+          placeholder="De"
           :value="query.yearFrom ?? ''"
           @change="update({ yearFrom: parseYear(($event.target as HTMLInputElement).value) })"
         />
         <span aria-hidden="true">—</span>
-        <label :for="`${idPrefix}-to`" class="visually-hidden">To year</label>
+        <label :for="`${idPrefix}-to`" class="visually-hidden">Jusqu’à l’année</label>
         <input
           :id="`${idPrefix}-to`"
           class="filters__year numeric"
           inputmode="numeric"
-          placeholder="To"
+          placeholder="À"
           :value="query.yearTo ?? ''"
           @change="update({ yearTo: parseYear(($event.target as HTMLInputElement).value) })"
         />
@@ -133,15 +134,15 @@ function parseYear(value: string): number | null {
     </fieldset>
 
     <fieldset class="filters__group">
-      <legend class="label">Availability</legend>
+      <legend class="label">Disponibilité</legend>
       <label class="filters__switch">
         <input type="checkbox" :checked="query.readableOnly" @change="update({ readableOnly: ($event.target as HTMLInputElement).checked })" />
-        <span>Readable on an official platform</span>
+        <span>Lisible sur une plateforme officielle</span>
       </label>
     </fieldset>
 
     <fieldset v-if="facets.languages.length" class="filters__group">
-      <legend class="label">Language</legend>
+      <legend class="label">Langue</legend>
       <div class="filters__chips">
         <button
           v-for="language in facets.languages.slice(0, VISIBLE_LANGUAGES)"
@@ -151,13 +152,13 @@ function parseYear(value: string): number | null {
           :aria-pressed="query.languages.includes(language)"
           @click="update({ languages: toggle(query.languages, language, SEARCH_LIMITS.maxLanguages) })"
         >
-          {{ language }}
+          {{ languageLabel(language) }}
         </button>
       </div>
     </fieldset>
 
     <fieldset v-if="facets.platforms.length" class="filters__group">
-      <legend class="label">Platforms</legend>
+      <legend class="label">Plateformes</legend>
       <button
         type="button"
         class="filters__expand"
@@ -165,13 +166,13 @@ function parseYear(value: string): number | null {
         :aria-controls="`${idPrefix}-platforms`"
         @click="platformsExpanded = !platformsExpanded"
       >
-        {{ platformsExpanded ? 'Hide platforms' : `Choose among ${facets.platforms.length} platforms` }}
-        <template v-if="query.platformIds.length"> · {{ query.platformIds.length }} selected</template>
+        {{ platformsExpanded ? 'Masquer les plateformes' : `Choisir parmi ${facets.platforms.length} plateformes` }}
+        <template v-if="query.platformIds.length"> · {{ plural(query.platformIds.length, 'sélectionnée', 'sélectionnées') }}</template>
         <UiIcon name="chevronDown" :size="16" :class="{ 'is-flipped': platformsExpanded }" />
       </button>
       <template v-if="platformsExpanded">
-      <label :for="`${idPrefix}-platform`" class="visually-hidden">Filter platforms</label>
-      <input :id="`${idPrefix}-platform`" v-model="platformFilter" class="filters__platform-search" type="search" placeholder="Find a platform…" autocomplete="off" />
+      <label :for="`${idPrefix}-platform`" class="visually-hidden">Filtrer les plateformes</label>
+      <input :id="`${idPrefix}-platform`" v-model="platformFilter" class="filters__platform-search" type="search" placeholder="Trouver une plateforme…" autocomplete="off" />
       <ul :id="`${idPrefix}-platforms`" class="filters__platforms" role="list">
         <li v-for="platform in visiblePlatforms" :key="platform.id">
           <label class="filters__check">

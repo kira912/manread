@@ -22,7 +22,7 @@ test('key journeys emit product analytics events', async ({ page, isMobile }) =>
   await input.press('Enter')
   await expect(page).toHaveURL(/paper-moon-courier/)
 
-  await page.getByRole('button', { name: 'Add to library' }).click()
+  await page.getByRole('button', { name: 'Ajouter à ma bibliothèque' }).click()
   const popup = page.waitForEvent('popup')
   await page.locator('#where-to-read').getByRole('link', { name: /Kite Reader/ }).first().click()
   await (await popup).close()
@@ -41,7 +41,7 @@ test('reading emits open and completion events', async ({ page, isMobile }) => {
   const events = await recordEvents(page)
   await visit(page, '/read/9001/manread-demo~saltwater-archive-c2')
   await page.keyboard.press('End')
-  await expect(page.getByRole('img', { name: 'Page 5 of 5' })).toBeVisible()
+  await expect(page.getByRole('img', { name: 'Page 5 sur 5' })).toBeVisible()
   await expect.poll(events).toEqual(
     expect.arrayContaining([
       ['reader_open', { manga: 'Saltwater Archive', chapter: 2 }],
@@ -53,7 +53,7 @@ test('reading emits open and completion events', async ({ page, isMobile }) => {
 test('searches with no results are reported', async ({ page }) => {
   const events = await recordEvents(page)
   await visit(page, '/search?q=zzzz-nothing')
-  await expect(page.getByText('Nothing on these shelves')).toBeVisible()
+  await expect(page.getByText('Rien sur ces étagères')).toBeVisible()
   await expect.poll(events).toContainEqual(['search_no_results', { term: 'zzzz-nothing' }])
 })
 

@@ -1,7 +1,8 @@
 {
   "name": "Manread",
   "short_name": "Manread",
-  "description": "An editorial index of manga, and every legal place to read them.",
+  "description": "Un index éditorial des mangas, et tous les endroits où les lire légalement.",
+  "lang": "fr",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#050506",

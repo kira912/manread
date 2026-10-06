@@ -29,6 +29,7 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeo>) {
     ogUrl: url,
     ogType: () => (seo.value.type === 'book' ? 'book' : seo.value.type === 'profile' ? 'profile' : 'website'),
     ogSiteName: siteName,
+    ogLocale: 'fr_FR',
     ogImage: () => seo.value.image ?? undefined,
     ogImageAlt: () => seo.value.imageAlt,
     twitterCard: () => (seo.value.image ? 'summary_large_image' : 'summary'),

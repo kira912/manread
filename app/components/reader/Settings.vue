@@ -6,26 +6,26 @@ const props = defineProps<{ preferences: ReaderPreferences }>()
 const emit = defineEmits<{ change: [patch: Partial<ReaderPreferences>] }>()
 
 const groups = [
-  { key: 'mode', label: 'Layout', options: [['auto', 'Auto'], ['paged', 'Page by page'], ['vertical', 'Vertical scroll']] },
-  { key: 'direction', label: 'Reading direction', options: [['auto', 'Auto'], ['rtl', 'Right to left'], ['ltr', 'Left to right']] },
-  { key: 'fit', label: 'Page fit', options: [['height', 'Fit height'], ['width', 'Fit width']] },
+  { key: 'mode', label: 'Affichage', options: [['auto', 'Auto'], ['paged', 'Page par page'], ['vertical', 'Défilement vertical']] },
+  { key: 'direction', label: 'Sens de lecture', options: [['auto', 'Auto'], ['rtl', 'De droite à gauche'], ['ltr', 'De gauche à droite']] },
+  { key: 'fit', label: 'Ajustement', options: [['height', 'À la hauteur'], ['width', 'À la largeur']] },
 ] as const
 
 const shortcuts = [
-  ['← →', 'Turn pages (follows reading direction)'],
-  ['Space / Shift+Space', 'Next / previous page'],
-  ['[ ]', 'Previous / next chapter'],
-  ['F', 'Fullscreen'],
-  ['M', 'Show or hide controls'],
+  ['← →', 'Tourner les pages (selon le sens de lecture)'],
+  ['Espace / Maj+Espace', 'Page suivante / précédente'],
+  ['[ ]', 'Chapitre précédent / suivant'],
+  ['F', 'Plein écran'],
+  ['M', 'Afficher ou masquer les commandes'],
 ]
 </script>
 
 <template>
-  <UiDialog v-model:open="open" label="Reader settings" variant="side">
+  <UiDialog v-model:open="open" label="Réglages du lecteur" variant="side">
     <div class="settings">
       <header class="settings__head">
-        <h2 class="display">Reader</h2>
-        <button type="button" class="settings__close" aria-label="Close settings" @click="open = false"><UiIcon name="close" /></button>
+        <h2 class="display">Lecteur</h2>
+        <button type="button" class="settings__close" aria-label="Fermer les réglages" @click="open = false"><UiIcon name="close" /></button>
       </header>
       <fieldset v-for="group in groups" :key="group.key" class="settings__group">
         <legend class="label">{{ group.label }}</legend>
@@ -43,9 +43,9 @@ const shortcuts = [
           </label>
         </div>
       </fieldset>
-      <p class="settings__hint">“Auto” reads manga right to left, page by page, and manhwa or manhua as a vertical scroll.</p>
+      <p class="settings__hint">En « Auto », les mangas se lisent de droite à gauche, page par page, et les manhwas ou manhuas en défilement vertical.</p>
       <section class="settings__group" aria-labelledby="shortcuts-heading">
-        <h3 id="shortcuts-heading" class="label">Keyboard</h3>
+        <h3 id="shortcuts-heading" class="label">Clavier</h3>
         <dl class="settings__shortcuts">
           <template v-for="[keys, description] in shortcuts" :key="keys">
             <dt><kbd>{{ keys }}</kbd></dt>

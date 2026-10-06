@@ -16,10 +16,10 @@ function scroll(direction: 1 | -1) {
 <template>
   <div class="strip">
     <div class="strip__controls">
-      <button type="button" class="strip__control" :aria-label="`Scroll ${label} backward`" @click="scroll(-1)">
+      <button type="button" class="strip__control" :aria-label="`Faire défiler ${label} vers l’arrière`" @click="scroll(-1)">
         <UiIcon name="arrowLeft" />
       </button>
-      <button type="button" class="strip__control" :aria-label="`Scroll ${label} forward`" @click="scroll(1)">
+      <button type="button" class="strip__control" :aria-label="`Faire défiler ${label} vers l’avant`" @click="scroll(1)">
         <UiIcon name="arrowRight" />
       </button>
     </div>

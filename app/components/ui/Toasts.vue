@@ -16,7 +16,7 @@ function runAction(id: number, action: () => void) {
         <button v-if="toast.action" type="button" class="toast__action" @click="runAction(toast.id, toast.action.run)">
           {{ toast.action.label }}
         </button>
-        <button type="button" class="toast__close" aria-label="Dismiss notification" @click="dismiss(toast.id)">
+        <button type="button" class="toast__close" aria-label="Fermer la notification" @click="dismiss(toast.id)">
           <UiIcon name="close" :size="16" />
         </button>
       </div>

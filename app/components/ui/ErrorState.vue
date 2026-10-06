@@ -1,17 +1,17 @@
 <script setup lang="ts">
 withDefaults(defineProps<{ title?: string; message?: string; retrying?: boolean }>(), {
-  title: 'Signal lost',
-  message: 'The catalog did not answer in time. Nothing is broken on your side.',
+  title: 'Signal perdu',
+  message: 'Le catalogue n’a pas répondu à temps. Rien n’est cassé de votre côté.',
 })
 defineEmits<{ retry: [] }>()
 </script>
 
 <template>
   <div class="error" role="alert">
-    <span class="label">Error</span>
+    <span class="label">Erreur</span>
     <p class="error__title display">{{ title }}</p>
     <p class="error__message">{{ message }}</p>
-    <UiButton variant="line" size="sm" icon="refresh" :loading="retrying" @click="$emit('retry')">Try again</UiButton>
+    <UiButton variant="line" size="sm" icon="refresh" :loading="retrying" @click="$emit('retry')">Réessayer</UiButton>
   </div>
 </template>
 

@@ -127,6 +127,10 @@ Only import content you may redistribute: your own work, work you hold a license
 
 When the reader returns from an official platform, Manread offers to mark the next chapter as read. On mobile, official https links already open the publisher's app when it is installed (universal links / app links).
 
+## Language
+
+The interface is in French (`lang="fr"`, `og:locale` `fr_FR`, French number, date and relative-time formats). Genres, platform languages, publication and reading statuses, and creator roles are translated (`shared/domain/labels.ts`). Genre pages use French slugs (`/genre/tranche-de-vie`). French offers are listed first in “Où lire”, then English. Synopses and tags come from AniList and stay in English, so page meta descriptions are composed in French from metadata rather than from the synopsis.
+
 ## Design system
 
 Dark, editorial, cinematic. The palette is near-black graphite with bone-white text and one accent, a vermilion (`--c-shu`), used sparingly. Type pairs Instrument Serif (display), Geist (text) and Geist Mono (metadata), all self-hosted. Each home section has its own composition rather than another carousel: a ranked index with covers revealed on hover, a staggered film strip, a magazine spread with pull quotes, an asymmetric mosaic and a ledger table. A desktop vertical rail doubles as a scroll meter. Mobile gets a thumb-reach dock, a full-screen search and bottom-sheet filters. Covers morph between pages through the View Transitions API. All motion respects `prefers-reduced-motion`.

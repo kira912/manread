@@ -39,6 +39,16 @@ export function classifyCreatorRole(rawRole: string): CreatorRole {
   return 'other'
 }
 
+const ROLE_LABELS: Record<Exclude<CreatorRole, 'other'>, string> = {
+  story_art: 'Scénario & dessin',
+  story: 'Scénario',
+  art: 'Dessin',
+}
+
+export function creatorRoleLabel(credit: Pick<CreatorCredit, 'role' | 'roleLabel'>): string {
+  return credit.role === 'other' ? credit.roleLabel : ROLE_LABELS[credit.role]
+}
+
 const ROLE_PRIORITY: Record<CreatorRole, number> = { story_art: 0, story: 1, art: 2, other: 3 }
 
 export function principalCredits(credits: readonly CreatorCredit[]): CreatorCredit[] {

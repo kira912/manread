@@ -1,17 +1,27 @@
 <script setup lang="ts">
 usePageSeo({
-  title: 'About & sources',
-  description: 'How Manread works: an editorial index of manga that links only to official publishers and licensed platforms, with metadata from AniList.',
+  title: 'À propos & sources',
+  description:
+    'Comment fonctionne Manread : un index éditorial de mangas qui renvoie vers les éditeurs officiels et les plateformes sous licence, avec une lecture intégrée réservée aux contenus autorisés.',
   path: '/about',
 })
 
 const principles = [
-  { title: 'We index. We never host.', body: 'Manread stores no chapters, pages or scans. Every reading link points to a publisher or a platform that holds the rights in that language.' },
-  { title: 'Official sources only.', body: 'Availability comes from AniList’s moderated list of official streaming links. Unofficial and scanlation sites are never listed, and every link is validated before it is shown.' },
-  { title: 'Your library stays yours.', body: 'Your library, progress and history live in this browser only. No account, no tracking profile. You can export them at any time from the library page.' },
   {
-    title: 'Measured, not watched.',
-    body: 'We use cookieless, anonymous analytics (Vercel Web Analytics, Speed Insights and Umami) to count visits, measure page speed and see which features are used — such as searches, chapters read or platforms opened. No cookies, no cross-site tracking, no profile, and “Do Not Track” is respected.',
+    title: 'Nous indexons. Nous ne copions pas.',
+    body: 'Manread ne recopie ni ne récupère aucun contenu d’autres sites. Les seuls chapitres lisibles dans l’app sont ceux dont la diffusion est autorisée : licence, ayant droit et source sont affichés sur chacun.',
+  },
+  {
+    title: 'Uniquement des sources officielles.',
+    body: 'Les liens « Où lire » proviennent de la liste modérée des liens officiels d’AniList. Les sites non officiels et de scantrad n’y figurent jamais, et chaque lien est vérifié avant d’être affiché.',
+  },
+  {
+    title: 'Votre bibliothèque vous appartient.',
+    body: 'Votre bibliothèque, votre progression et votre historique restent dans ce navigateur. Pas de compte, pas de profil. Vous pouvez les exporter à tout moment depuis la page Bibliothèque.',
+  },
+  {
+    title: 'Mesuré, pas surveillé.',
+    body: 'Nous utilisons des statistiques anonymes et sans cookies (Vercel Web Analytics, Speed Insights et Umami) pour compter les visites, mesurer la vitesse des pages et voir quelles fonctionnalités servent : recherches, chapitres lus, plateformes ouvertes. Aucun pistage entre sites, aucun profil, et le réglage « Ne pas me pister » de votre navigateur est respecté.',
   },
 ]
 </script>
@@ -19,8 +29,8 @@ const principles = [
 <template>
   <div class="page about">
     <header class="about__head">
-      <p class="label">About &amp; sources</p>
-      <h1 class="display about__title">A table of contents <em>for everything worth reading.</em></h1>
+      <p class="label">À propos &amp; sources</p>
+      <h1 class="display about__title">Une table des matières <em>pour tout ce qui mérite d’être lu.</em></h1>
     </header>
     <ol class="about__list" role="list">
       <li v-for="(principle, index) in principles" :key="principle.title" class="about__item">
@@ -30,9 +40,9 @@ const principles = [
       </li>
     </ol>
     <p class="about__credit">
-      Catalog data, covers and official links are provided by
-      <a class="link-underline" href="https://anilist.co" target="_blank" rel="noopener noreferrer external">AniList</a>. Cover art belongs to its respective
-      publishers and creators.
+      Les données du catalogue, les couvertures et les liens officiels sont fournis par
+      <a class="link-underline" href="https://anilist.co" target="_blank" rel="noopener noreferrer external">AniList</a>. Les couvertures appartiennent à leurs
+      éditeurs et à leurs auteurs. Les synopsis et les tags proviennent d’AniList et sont en anglais.
     </p>
   </div>
 </template>

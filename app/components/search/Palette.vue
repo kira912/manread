@@ -123,7 +123,7 @@ function onKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <UiDialog v-model:open="open" label="Search the catalog" fullscreen-on-mobile>
+  <UiDialog v-model:open="open" label="Rechercher dans le catalogue" fullscreen-on-mobile>
     <div class="palette">
       <div class="palette__field">
         <UiIcon name="search" :size="22" class="palette__glyph" />
@@ -133,7 +133,7 @@ function onKeydown(event: KeyboardEvent) {
           class="palette__input"
           type="search"
           role="combobox"
-          aria-label="Search titles and creators"
+          aria-label="Rechercher des titres et des auteurs"
           aria-autocomplete="list"
           :aria-expanded="options.length > 0"
           :aria-controls="listId"
@@ -143,42 +143,42 @@ function onKeydown(event: KeyboardEvent) {
           spellcheck="false"
           enterkeyhint="search"
           maxlength="100"
-          placeholder="Title, author, artist…"
+          placeholder="Titre, auteur, dessinateur…"
           @keydown="onKeydown"
         />
         <span v-if="status === 'loading'" class="palette__spinner" aria-hidden="true" />
-        <button type="button" class="palette__close" aria-label="Close search" @click="palette.hide()">
-          <span class="palette__esc">Esc</span>
+        <button type="button" class="palette__close" aria-label="Fermer la recherche" @click="palette.hide()">
+          <span class="palette__esc">Échap</span>
           <UiIcon name="close" class="palette__close-icon" />
         </button>
       </div>
 
       <div class="palette__body">
         <p class="visually-hidden" aria-live="polite">
-          <template v-if="hasQuery && status === 'success'">{{ results?.manga.length ?? 0 }} titles and {{ results?.creators.length ?? 0 }} creators found</template>
+          <template v-if="hasQuery && status === 'success'">{{ plural(results?.manga.length ?? 0, 'titre') }} et {{ plural(results?.creators.length ?? 0, 'auteur') }} trouvés</template>
         </p>
 
         <div v-if="hasQuery && status === 'error'" class="palette__state">
-          <UiErrorState title="Search is out of reach" message="We couldn't reach the catalog. Check your connection." @retry="retry" />
+          <UiErrorState title="La recherche est injoignable" message="Impossible de joindre le catalogue. Vérifiez votre connexion." @retry="retry" />
         </div>
 
         <ul v-else-if="options.length" :id="listId" class="palette__list" role="listbox" aria-label="Suggestions">
           <template v-for="(option, index) in options" :key="option.id">
-            <li v-if="index === 0 && !hasQuery && option.kind === 'recent-term'" class="palette__group label" role="presentation">Recent searches</li>
+            <li v-if="index === 0 && !hasQuery && option.kind === 'recent-term'" class="palette__group label" role="presentation">Recherches récentes</li>
             <li
               v-if="!hasQuery && option.kind === 'recent-view' && options[index - 1]?.kind !== 'recent-view'"
               class="palette__group label"
               role="presentation"
             >
-              Recently viewed
+              Consultés récemment
             </li>
-            <li v-if="hasQuery && option.kind === 'manga' && index === 0" class="palette__group label" role="presentation">Titles</li>
+            <li v-if="hasQuery && option.kind === 'manga' && index === 0" class="palette__group label" role="presentation">Titres</li>
             <li
               v-if="option.kind === 'creator' && options[index - 1]?.kind !== 'creator'"
               class="palette__group label"
               role="presentation"
             >
-              Creators
+              Auteurs
             </li>
 
             <li
@@ -213,8 +213,8 @@ function onKeydown(event: KeyboardEvent) {
               <template v-else-if="option.kind === 'all'">
                 <UiIcon name="arrowRight" />
                 <span class="palette__text">
-                  <span class="palette__title">All results for “{{ option.label }}”</span>
-                  <span class="palette__detail">Filter by genre, status, platform, language…</span>
+                  <span class="palette__title">Tous les résultats pour « {{ option.label }} »</span>
+                  <span class="palette__detail">Filtrer par genre, statut, plateforme, langue…</span>
                 </span>
               </template>
               <template v-else-if="option.kind === 'recent-term'">
@@ -233,8 +233,8 @@ function onKeydown(event: KeyboardEvent) {
         </ul>
 
         <div v-else-if="!hasQuery" class="palette__state palette__intro">
-          <p class="display palette__intro-title">Find a title, an author, an artist.</p>
-          <p class="palette__intro-body">Every result shows where it can be read legally.</p>
+          <p class="display palette__intro-title">Trouvez un titre, un auteur, un dessinateur.</p>
+          <p class="palette__intro-body">Chaque résultat indique où le lire légalement.</p>
         </div>
 
         <div v-else-if="status === 'loading'" class="palette__state" aria-hidden="true">
@@ -249,11 +249,11 @@ function onKeydown(event: KeyboardEvent) {
       </div>
 
       <footer class="palette__footer" aria-hidden="true">
-        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-        <span><kbd>↵</kbd> open</span>
-        <span><kbd>⌘</kbd><kbd>↵</kbd> all results</span>
+        <span><kbd>↑</kbd><kbd>↓</kbd> naviguer</span>
+        <span><kbd>↵</kbd> ouvrir</span>
+        <span><kbd>⌘</kbd><kbd>↵</kbd> tous les résultats</span>
         <button v-if="!hasQuery && searchHistory.terms.value.length" type="button" class="palette__clear" tabindex="-1" @click="searchHistory.clear()">
-          Clear history
+          Effacer l’historique
         </button>
       </footer>
     </div>

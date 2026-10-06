@@ -53,11 +53,11 @@ export interface LibraryQuery {
 export type LibraryStats = Readonly<Record<LibraryView, number>>
 
 const STATUS_LABELS: Record<ReadingStatus, string> = {
-  reading: 'Reading',
-  completed: 'Completed',
-  plan_to_read: 'Plan to read',
-  on_hold: 'On hold',
-  dropped: 'Dropped',
+  reading: 'En lecture',
+  completed: 'Lu',
+  plan_to_read: 'À lire',
+  on_hold: 'En pause',
+  dropped: 'Abandonné',
 }
 
 export function readingStatusLabel(status: ReadingStatus): string {
@@ -192,7 +192,7 @@ export function progressRatio(entry: LibraryEntry): number | null {
 const LIBRARY_COMPARATORS: Record<LibrarySort, (a: LibraryEntry, b: LibraryEntry) => number> = {
   updated: (a, b) => b.updatedAt.localeCompare(a.updatedAt),
   added: (a, b) => b.addedAt.localeCompare(a.addedAt),
-  title: (a, b) => a.manga.title.localeCompare(b.manga.title, 'en', { sensitivity: 'base' }),
+  title: (a, b) => a.manga.title.localeCompare(b.manga.title, 'fr', { sensitivity: 'base' }),
   progress: (a, b) => (progressRatio(b) ?? -1) - (progressRatio(a) ?? -1) || b.chapter - a.chapter,
 }
 
@@ -220,16 +220,16 @@ function withEntry(library: Library, entry: LibraryEntry): Library {
 
 function requireEntry(library: Library, mangaId: MangaId): LibraryEntry {
   const entry = getEntry(library, mangaId)
-  if (!entry) throw new LibraryInvariantError(`Manga "${mangaId}" is not in the library`)
+  if (!entry) throw new LibraryInvariantError(`Le titre « ${mangaId} » n’est pas dans votre bibliothèque`)
   return entry
 }
 
 function assertValidChapter(chapter: number, totalChapters: number | null): void {
   if (!Number.isInteger(chapter) || chapter < 0) {
-    throw new LibraryInvariantError('Chapter must be a non-negative integer')
+    throw new LibraryInvariantError('Le chapitre doit être un nombre entier positif')
   }
   if (totalChapters !== null && chapter > totalChapters) {
-    throw new LibraryInvariantError(`Chapter cannot exceed ${totalChapters}`)
+    throw new LibraryInvariantError(`Le chapitre ne peut pas dépasser ${totalChapters}`)
   }
 }
 

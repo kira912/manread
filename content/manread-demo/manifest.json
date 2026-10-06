@@ -2,11 +2,11 @@
   "version": 1,
   "source": {
     "id": "manread-demo",
-    "name": "Manread demo studio",
+    "name": "Studio de démo Manread",
     "license": {
       "name": "CC0 1.0",
       "url": "https://creativecommons.org/publicdomain/zero/1.0/",
-      "rightsHolder": "Manread demo studio"
+      "rightsHolder": "Studio de démo Manread"
     }
   },
   "series": [
@@ -20,7 +20,7 @@
         {
           "id": "saltwater-archive-c1",
           "number": 1,
-          "title": "What the tide returns",
+          "title": "Ce que rend la marée",
           "publishedAt": "2026-09-01",
           "pages": [
             {
@@ -58,7 +58,7 @@
         {
           "id": "saltwater-archive-c2",
           "number": 2,
-          "title": "A letter, unsigned",
+          "title": "Une lettre sans signature",
           "publishedAt": "2026-09-01",
           "pages": [
             {
@@ -100,7 +100,7 @@
         {
           "id": "late-bus-to-haneul-c1",
           "number": 1,
-          "title": "Last stop",
+          "title": "Terminus",
           "publishedAt": "2026-09-01",
           "pages": [
             {

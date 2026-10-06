@@ -23,17 +23,17 @@ const atLastChapter = computed(() => props.entry.manga.chapters !== null && prop
     <div class="row__main">
       <h3 class="row__title display">
         <MangaLink :manga="entry.manga" class="link-underline">{{ entry.manga.title }}</MangaLink>
-        <span v-if="entry.favorite" class="row__fav" aria-label="Favorite"><UiIcon name="bookmarkFilled" :size="14" /></span>
+        <span v-if="entry.favorite" class="row__fav" aria-label="Favori"><UiIcon name="bookmarkFilled" :size="14" /></span>
       </h3>
-      <p class="row__meta">{{ originLabel(entry.manga.origin) }} · {{ statusLabel(entry.manga.status) }} · updated {{ relativeTime(entry.updatedAt) }}</p>
+      <p class="row__meta">{{ originLabel(entry.manga.origin) }} · {{ statusLabel(entry.manga.status) }} · modifié {{ relativeTime(entry.updatedAt) }}</p>
       <div class="row__progress">
         <span class="numeric">Ch. {{ entry.chapter }}<template v-if="entry.manga.chapters"> / {{ entry.manga.chapters }}</template></span>
-        <UiProgressBar :value="progressRatio(entry)" :label="`${entry.manga.title} progress`" class="row__bar" />
+        <UiProgressBar :value="progressRatio(entry)" :label="`Progression de ${entry.manga.title}`" class="row__bar" />
         <button
           type="button"
           class="row__bump"
           :disabled="atLastChapter"
-          :aria-label="`Mark chapter ${entry.chapter + 1} of ${entry.manga.title} as read`"
+          :aria-label="`Marquer le chapitre ${entry.chapter + 1} de ${entry.manga.title} comme lu`"
           @click="setProgress(entry.manga.id, entry.chapter + 1)"
         >
           +1
@@ -42,10 +42,10 @@ const atLastChapter = computed(() => props.entry.manga.chapters !== null && prop
     </div>
 
     <div class="row__side">
-      <UiSelect v-model="status" :label="`Status of ${entry.manga.title}`" :options="statusOptions" hide-label />
+      <UiSelect v-model="status" :label="`Statut de ${entry.manga.title}`" :options="statusOptions" hide-label />
       <div class="row__actions">
         <NuxtLink v-if="inAppPosition" class="row__resume" :to="`/read/${entry.manga.id}/${inAppPosition.chapterId}`">
-          Resume here <UiIcon name="arrowRight" :size="14" />
+          Reprendre ici <UiIcon name="arrowRight" :size="14" />
         </NuxtLink>
         <a
           v-else-if="entry.preferredPlatform"
@@ -56,19 +56,19 @@ const atLastChapter = computed(() => props.entry.manga.chapters !== null && prop
           @click="openOfficialPlatform({ mangaId: entry.manga.id, title: entry.manga.title, platformName: entry.preferredPlatform.name, nextChapter: entry.chapter + 1 })"
         >
           {{ entry.preferredPlatform.name }} <UiIcon name="arrowUpRight" :size="14" />
-          <span class="visually-hidden">(opens in a new tab)</span>
+          <span class="visually-hidden">(s’ouvre dans un nouvel onglet)</span>
         </a>
-        <NuxtLink v-else class="row__resume" :to="`${mangaPath(entry.manga)}#where-to-read`">Where to read</NuxtLink>
+        <NuxtLink v-else class="row__resume" :to="`${mangaPath(entry.manga)}#where-to-read`">Où lire</NuxtLink>
         <button
           type="button"
           class="row__icon"
           :aria-pressed="entry.favorite"
-          :aria-label="entry.favorite ? `Remove ${entry.manga.title} from favorites` : `Add ${entry.manga.title} to favorites`"
+          :aria-label="entry.favorite ? `Retirer ${entry.manga.title} des favoris` : `Ajouter ${entry.manga.title} aux favoris`"
           @click="toggleFavorite(entry.manga)"
         >
           <UiIcon :name="entry.favorite ? 'bookmarkFilled' : 'bookmark'" :size="18" />
         </button>
-        <button type="button" class="row__icon" :aria-label="`Remove ${entry.manga.title} from library`" @click="remove(entry.manga.id)">
+        <button type="button" class="row__icon" :aria-label="`Retirer ${entry.manga.title} de la bibliothèque`" @click="remove(entry.manga.id)">
           <UiIcon name="trash" :size="18" />
         </button>
       </div>

@@ -40,7 +40,7 @@ describe('library state', () => {
     api().setStatus(buildSnapshot({ id: '7', chapters: 5 }), 'reading')
     expect(api().setProgress('7', 99)).toBe(false)
     expect(api().library.value.entries['7']?.chapter).toBe(0)
-    expect(toasts().toasts.value.at(-1)).toMatchObject({ tone: 'error', message: 'Chapter cannot exceed 5' })
+    expect(toasts().toasts.value.at(-1)).toMatchObject({ tone: 'error', message: 'Le chapitre ne peut pas dépasser 5' })
   })
 
   it('offers an undo after removal', async () => {
@@ -56,7 +56,7 @@ describe('library state', () => {
     useState('library-ready').value = true
     const wrapper = await mountSuspended(LibraryControl, { props: { manga: buildSnapshot({ id: '55', title: 'Vagabond' }) } })
     await wrapper.find('button').trigger('click')
-    expect(wrapper.text()).toContain('In your library')
+    expect(wrapper.text()).toContain('Dans votre bibliothèque')
     await wrapper.find('input[value="completed"]').setValue(true)
     expect(useState<{ entries: Record<string, { status: string }> }>('library').value.entries['55']?.status).toBe('completed')
   })

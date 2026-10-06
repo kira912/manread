@@ -13,14 +13,14 @@ const licenses = computed(() => {
 })
 
 const isRead = (chapter: Chapter) => ready.value && entry.value !== undefined && chapter.number <= entry.value.chapter
-const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeZone: 'UTC' })
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeZone: 'UTC' })
 </script>
 
 <template>
   <section id="read-here" class="read" aria-labelledby="read-heading">
     <header class="read__head">
-      <p class="label"><span class="read__dot" aria-hidden="true" /> In-app · licensed for distribution</p>
-      <h2 id="read-heading" class="display read__title">Read on Manread</h2>
+      <p class="label"><span class="read__dot" aria-hidden="true" /> Dans l’app · diffusion autorisée</p>
+      <h2 id="read-heading" class="display read__title">Lire sur Manread</h2>
       <UiButton v-if="resume" variant="accent" :to="resume.to" icon-after="arrowRight">{{ resume.label }}</UiButton>
     </header>
 
@@ -34,14 +34,14 @@ const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeZ
           </span>
           <span class="read__state">
             <UiIcon v-if="isRead(chapter)" name="check" :size="16" />
-            <span class="visually-hidden">{{ isRead(chapter) ? '(read)' : '' }}</span>
+            <span class="visually-hidden">{{ isRead(chapter) ? '(lu)' : '' }}</span>
           </span>
         </NuxtLink>
       </li>
     </ol>
 
     <p v-for="licensed in licenses" :key="licensed.id" class="read__license">
-      Published by {{ licensed.sourceName }} · © {{ licensed.license.rightsHolder }} ·
+      Publié par {{ licensed.sourceName }} · © {{ licensed.license.rightsHolder }} ·
       <a v-if="licensed.license.url" :href="licensed.license.url" class="link-underline" target="_blank" rel="noopener noreferrer external">{{ licensed.license.name }}</a>
       <template v-else>{{ licensed.license.name }}</template>
     </p>

@@ -3,7 +3,7 @@ import { visit } from './helpers'
 
 test('manga pages expose canonical, social and structured metadata', async ({ page }) => {
   await visit(page, '/manga/9001/saltwater-archive')
-  await expect(page).toHaveTitle('Saltwater Archive — where to read · Manread')
+  await expect(page).toHaveTitle('Saltwater Archive — où le lire · Manread')
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'http://localhost:3210/manga/9001/saltwater-archive')
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'book')
   await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image')
@@ -24,7 +24,7 @@ test('robots.txt and sitemap are generated', async ({ request }) => {
   expect(sitemap.headers()['content-type']).toContain('application/xml')
   const body = await sitemap.text()
   expect(body).toContain('<loc>http://localhost:3210/manga/9001/saltwater-archive</loc>')
-  expect(body).toContain('<loc>http://localhost:3210/genre/drama</loc>')
+  expect(body).toContain('<loc>http://localhost:3210/genre/drame</loc>')
 })
 
 test('responses carry security headers and a nonce-based CSP', async ({ request }) => {
@@ -58,7 +58,7 @@ test('the skip link moves focus to the main content', async ({ page, isMobile })
   test.skip(isMobile, 'keyboard-only check')
   await visit(page, '/')
   await page.keyboard.press('Tab')
-  const skip = page.getByRole('link', { name: 'Skip to content' })
+  const skip = page.getByRole('link', { name: 'Aller au contenu' })
   await expect(skip).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(page).toHaveURL(/#main$/)

@@ -4,15 +4,15 @@ export interface EditorialPickConfig {
 }
 
 export const EDITORIAL_PICKS: readonly EditorialPickConfig[] = [
-  { mangaId: '30656', note: 'Ink as weather. Every duel reads like a brush stroke you can hear.' },
-  { mangaId: '118586', note: 'A fantasy told from the quiet after the quest — grief, time, and small kindnesses.' },
-  { mangaId: '86082', note: 'World-building through recipes. The most inventive dungeon ever drawn.' },
-  { mangaId: '34632', note: 'Uncomfortable, unforgettable. A coming-of-age that refuses to look away.' },
-  { mangaId: '136807', note: 'One sitting, one gut-punch. A love letter to the act of drawing itself.' },
+  { mangaId: '30656', note: 'L’encre comme une météo. Chaque duel se lit comme un coup de pinceau qu’on entendrait.' },
+  { mangaId: '118586', note: 'Une fantasy racontée depuis le calme d’après la quête : le deuil, le temps, et les petites gentillesses.' },
+  { mangaId: '86082', note: 'Un univers bâti à coups de recettes. Le donjon le plus inventif jamais dessiné.' },
+  { mangaId: '34632', note: 'Dérangeant, inoubliable. Un récit d’apprentissage qui refuse de détourner le regard.' },
+  { mangaId: '136807', note: 'Une seule lecture, un coup au cœur. Une lettre d’amour au geste même de dessiner.' },
 ]
 
 export const FIXTURE_EDITORIAL_PICKS: readonly EditorialPickConfig[] = [
-  { mangaId: '9001', note: 'A slow-burn of salt, tide and memory.' },
-  { mangaId: '9004', note: 'Architecture as character. Every panel is a floor plan of grief.' },
-  { mangaId: '9007', note: 'Small stakes, enormous heart.' },
+  { mangaId: '9001', note: 'Une lente combustion de sel, de marées et de souvenirs.' },
+  { mangaId: '9004', note: 'L’architecture comme personnage. Chaque case est le plan d’un deuil.' },
+  { mangaId: '9007', note: 'De petits enjeux, un cœur immense.' },
 ]

@@ -16,9 +16,9 @@ defineProps<{ items: readonly MangaSummary[] }>()
         />
         <span class="mosaic__veil" aria-hidden="true" />
         <span class="mosaic__caption">
-          <span v-if="manga.score" class="mosaic__score numeric">{{ formatScore(manga.score) }}<span class="visually-hidden"> out of 10</span></span>
+          <span v-if="manga.score" class="mosaic__score numeric">{{ formatScore(manga.score) }}<span class="visually-hidden"> sur 10</span></span>
           <span class="mosaic__title display">{{ manga.title }}</span>
-          <span class="mosaic__meta">{{ originLabel(manga.origin) }} · {{ compactNumber(manga.popularity) }} readers</span>
+          <span class="mosaic__meta">{{ originLabel(manga.origin) }} · {{ compactNumber(manga.popularity) }} lecteurs</span>
         </span>
       </MangaLink>
     </li>

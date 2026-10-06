@@ -4,14 +4,14 @@ const { history, forget, clear } = useViewHistory()
 
 <template>
   <div class="history">
-    <UiEmptyState v-if="!history.entries.length" title="No footprints yet" glyph="跡">
-      <p>Titles you open appear here, so you can find your way back.</p>
-      <template #actions><UiButton variant="line" to="/" icon-after="arrowRight">Explore the index</UiButton></template>
+    <UiEmptyState v-if="!history.entries.length" title="Aucune trace pour l’instant" glyph="跡">
+      <p>Les titres que vous ouvrez apparaissent ici, pour les retrouver facilement.</p>
+      <template #actions><UiButton variant="line" to="/" icon-after="arrowRight">Explorer l’index</UiButton></template>
     </UiEmptyState>
     <template v-else>
       <div class="history__bar">
-        <p class="label">{{ history.entries.length }} recently viewed</p>
-        <UiButton variant="ghost" size="sm" icon="trash" @click="clear()">Clear history</UiButton>
+        <p class="label">{{ plural(history.entries.length, 'titre consulté', 'titres consultés') }}</p>
+        <UiButton variant="ghost" size="sm" icon="trash" @click="clear()">Effacer l’historique</UiButton>
       </div>
       <ol class="history__list" role="list">
         <li v-for="item in history.entries" :key="item.manga.id" class="history__item">
@@ -20,7 +20,7 @@ const { history, forget, clear } = useViewHistory()
             <span class="history__title">{{ item.manga.title }}</span>
             <time class="history__time numeric" :datetime="item.viewedAt">{{ relativeTime(item.viewedAt) }}</time>
           </MangaLink>
-          <button type="button" class="history__forget" :aria-label="`Remove ${item.manga.title} from history`" @click="forget(item.manga.id)">
+          <button type="button" class="history__forget" :aria-label="`Retirer ${item.manga.title} de l’historique`" @click="forget(item.manga.id)">
             <UiIcon name="close" :size="16" />
           </button>
         </li>

@@ -1,6 +1,6 @@
 <template>
   <div class="reader-shell">
-    <a class="reader-skip" href="#reader">Skip to pages</a>
+    <a class="reader-skip" href="#reader">Aller aux pages</a>
     <slot />
     <UiToasts />
   </div>

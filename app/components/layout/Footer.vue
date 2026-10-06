@@ -2,16 +2,16 @@
   <footer class="footer">
     <div class="page footer__grid">
       <p class="footer__statement display">
-        An index, <em>not a library.</em>
+        Un index, <em>pas une bibliothèque.</em>
       </p>
       <p class="footer__note">
-        Manread does not host, copy or distribute manga. Every “Where to read” link leads to an official publisher or a licensed platform.
-        Catalog metadata courtesy of <a class="link-underline" href="https://anilist.co" rel="noopener noreferrer external" target="_blank">AniList</a>.
+        Manread ne copie aucun site tiers. Les liens « Où lire » mènent vers des éditeurs officiels ou des plateformes sous licence, et la
+        lecture intégrée ne propose que des contenus dont la diffusion est autorisée. Données du catalogue fournies par <a class="link-underline" href="https://anilist.co" rel="noopener noreferrer external" target="_blank">AniList</a>.
       </p>
-      <nav class="footer__nav" aria-label="Footer">
-        <NuxtLink class="link-underline" to="/about">About &amp; sources</NuxtLink>
-        <NuxtLink class="link-underline" to="/search">Browse everything</NuxtLink>
-        <NuxtLink class="link-underline" to="/library">Your library</NuxtLink>
+      <nav class="footer__nav" aria-label="Pied de page">
+        <NuxtLink class="link-underline" to="/about">À propos &amp; sources</NuxtLink>
+        <NuxtLink class="link-underline" to="/search">Tout parcourir</NuxtLink>
+        <NuxtLink class="link-underline" to="/library">Votre bibliothèque</NuxtLink>
       </nav>
     </div>
   </footer>

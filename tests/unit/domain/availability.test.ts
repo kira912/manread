@@ -3,14 +3,15 @@ import { groupAvailabilityByPlatform, mergeAvailability } from '#shared/domain/a
 import { buildAvailability } from '../../support/builders'
 
 describe('availability', () => {
-  it('groups offers by platform with English first', () => {
+  it('groups offers by platform with French first, then English', () => {
     const groups = groupAvailabilityByPlatform([
       buildAvailability({ platformId: 'kakao', platformName: 'KakaoPage', language: 'Korean', url: 'https://page.kakao.com/1' }),
-      buildAvailability({ language: 'French', url: 'https://mangaplus.shueisha.co.jp/fr' }),
+      buildAvailability({ platformId: 'viz', platformName: 'VIZ', language: 'English', url: 'https://www.viz.com/x' }),
       buildAvailability({ language: 'English' }),
+      buildAvailability({ language: 'French', url: 'https://mangaplus.shueisha.co.jp/fr' }),
     ])
-    expect(groups.map(group => group.platformId)).toEqual(['manga-plus', 'kakao'])
-    expect(groups[0]?.offers.map(offer => offer.language)).toEqual(['English', 'French'])
+    expect(groups.map(group => group.platformId)).toEqual(['manga-plus', 'viz', 'kakao'])
+    expect(groups[0]?.offers.map(offer => offer.language)).toEqual(['French', 'English'])
   })
 
   it('keeps one offer per language on a platform', () => {

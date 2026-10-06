@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { EMPTY_SEARCH_QUERY, parseSearchQuery, toSearchUrlParams, type SearchQuery } from '#shared/domain/search'
-import { slugify } from '#shared/domain/slug'
+import { genreLabel, genreSlug } from '#shared/domain/labels'
 
 definePageMeta({
   validate: route => typeof route.params.slug === 'string' && /^[a-z0-9-]{1,60}$/.test(route.params.slug),
@@ -10,9 +10,10 @@ const route = useRoute()
 const router = useRouter()
 const { data: facets } = await useSearchFacets()
 
-const genre = computed(() => facets.value.genres.find(name => slugify(name) === route.params.slug))
+const genre = computed(() => facets.value.genres.find(name => genreSlug(name) === route.params.slug))
+const label = computed(() => (genre.value ? genreLabel(genre.value) : 'Genre'))
 if (facets.value.genres.length && !genre.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Genre not found', fatal: true })
+  throw createError({ statusCode: 404, statusMessage: 'Genre introuvable', fatal: true })
 }
 
 const overrides = computed(() => parseSearchQuery(route.query))
@@ -31,8 +32,8 @@ function apply(next: SearchQuery) {
 const otherGenres = computed(() => facets.value.genres.filter(name => name !== genre.value))
 
 usePageSeo(() => ({
-  title: `${genre.value ?? 'Genre'} manga — where to read`,
-  description: `The most popular ${genre.value?.toLowerCase() ?? ''} manga, manhwa and manhua, with every official platform where you can read them legally.`,
+  title: `Mangas ${label.value.toLowerCase()} — où les lire`,
+  description: `Les mangas, manhwas et manhuas ${label.value.toLowerCase()} les plus populaires, et toutes les plateformes officielles où les lire légalement.`,
   path: `/genre/${route.params.slug}`,
   noindex: Object.keys(route.query).length > 0,
 }))
@@ -41,22 +42,22 @@ usePageSeo(() => ({
 <template>
   <div class="page genre">
     <header class="genre__head">
-      <nav class="label genre__crumbs" aria-label="Breadcrumb">
+      <nav class="label genre__crumbs" aria-label="Fil d’Ariane">
         <NuxtLink to="/">Index</NuxtLink> <span aria-hidden="true">/</span> <NuxtLink to="/search">Genres</NuxtLink>
       </nav>
-      <h1 class="display genre__title">{{ genre }}</h1>
-      <ul class="genre__others" role="list" aria-label="Other genres">
+      <h1 class="display genre__title">{{ label }}</h1>
+      <ul class="genre__others" role="list" aria-label="Autres genres">
         <li v-for="name in otherGenres" :key="name">
-          <NuxtLink :to="`/genre/${slugify(name)}`" class="link-underline">{{ name }}</NuxtLink>
+          <NuxtLink :to="`/genre/${genreSlug(name)}`" class="link-underline">{{ genreLabel(name) }}</NuxtLink>
         </li>
       </ul>
     </header>
 
     <div class="genre__layout">
-      <aside class="genre__sidebar" aria-label="Filters">
+      <aside class="genre__sidebar" aria-label="Filtres">
         <SearchFilters :query="query" :facets="facets" hide-genres @change="apply" />
       </aside>
-      <section aria-label="Results">
+      <section aria-label="Résultats">
         <SearchResults :query="query" @reset="apply({ ...EMPTY_SEARCH_QUERY })" />
       </section>
     </div>

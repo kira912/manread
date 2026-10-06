@@ -24,11 +24,11 @@ export function useResumeTarget(mangaId: MaybeRefOrGetter<MangaId>, chapters: Ma
     const current = saved ? list.find(chapter => chapter.id === saved.chapterId) : undefined
     if (saved && current) {
       if (!isLastPage(saved.page, saved.pageCount)) {
-        return { to: readerPath(current), label: `Continue ch. ${formatChapterNumber(current.number)} · p. ${saved.page + 1}`, isContinuation: true }
+        return { to: readerPath(current), label: `Continuer ch. ${formatChapterNumber(current.number)} · p. ${saved.page + 1}`, isContinuation: true }
       }
       const following = list.find(chapter => chapter.number > current.number)
-      if (following) return { to: readerPath(following), label: `Read ch. ${formatChapterNumber(following.number)}`, isContinuation: true }
+      if (following) return { to: readerPath(following), label: `Lire le ch. ${formatChapterNumber(following.number)}`, isContinuation: true }
     }
-    return { to: readerPath(first), label: `Start reading · ch. ${formatChapterNumber(first.number)}`, isContinuation: false }
+    return { to: readerPath(first), label: `Commencer la lecture · ch. ${formatChapterNumber(first.number)}`, isContinuation: false }
   })
 }

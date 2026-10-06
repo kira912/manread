@@ -12,10 +12,10 @@ useHotkey({ key: '/' }, () => palette.show())
 
 <template>
   <div class="shell">
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">Aller au contenu</a>
     <LayoutRail />
     <header class="topbar page">
-      <NuxtLink to="/" class="topbar__brand" aria-label="Manread, home">
+      <NuxtLink to="/" class="topbar__brand" aria-label="Manread, accueil">
         <LayoutBrandMark :size="24" />
         <span class="topbar__name display">manread</span>
       </NuxtLink>

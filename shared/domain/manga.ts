@@ -70,11 +70,11 @@ export interface MangaDetails {
 }
 
 const STATUS_LABELS: Record<MangaStatus, string> = {
-  releasing: 'Ongoing',
-  finished: 'Completed',
-  hiatus: 'On hiatus',
-  cancelled: 'Cancelled',
-  upcoming: 'Upcoming',
+  releasing: 'En cours',
+  finished: 'Terminé',
+  hiatus: 'En pause',
+  cancelled: 'Annulé',
+  upcoming: 'À paraître',
 }
 
 const ORIGIN_LABELS: Record<MangaOrigin, string> = {
@@ -117,7 +117,7 @@ export function mangaPath(manga: Pick<MangaSummary, 'id' | 'slug'>): string {
 
 export function chapterCountLabel(manga: Pick<MangaSummary, 'chapters' | 'status'>): string {
   if (manga.chapters !== null) return `${manga.chapters} ch.`
-  return manga.status === 'releasing' ? 'Ongoing' : '—'
+  return manga.status === 'releasing' ? 'En cours' : '—'
 }
 
 export function shortSynopsis(paragraphs: readonly string[], maxLength: number): string {

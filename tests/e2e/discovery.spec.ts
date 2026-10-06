@@ -4,10 +4,10 @@ import { openSearch, visit } from './helpers'
 test('home presents the hero and editorial sections', async ({ page }) => {
   await visit(page, '/')
   await expect(page.getByRole('heading', { level: 1, name: 'Ninth Floor Fox' })).toBeVisible()
-  for (const name of ['The index', 'Fresh ink', 'Editor’s picks', 'Hidden gems', 'Most followed', 'Just indexed']) {
+  for (const name of ['L’index', 'Encre fraîche', 'La sélection', 'Pépites cachées', 'Les plus suivis', 'Tout juste indexés']) {
     await expect(page.getByRole('heading', { level: 2, name })).toBeAttached()
   }
-  await expect(page.getByRole('table', { name: 'Most followed manga of all time' })).toBeAttached()
+  await expect(page.getByRole('table', { name: 'Les mangas les plus suivis de tous les temps' })).toBeAttached()
 })
 
 test('search palette goes from query to manga page with the keyboard', async ({ page }) => {
@@ -38,7 +38,7 @@ test('recent searches are remembered', async ({ page }) => {
 test('manga page lists official sources as safe external links', async ({ page }) => {
   await visit(page, '/manga/9003/paper-moon-courier')
   const section = page.locator('#where-to-read')
-  await expect(section.getByRole('heading', { name: 'Where to read' })).toBeVisible()
+  await expect(section.getByRole('heading', { name: 'Où lire' })).toBeVisible()
   const link = section.getByRole('link', { name: /Kite Reader/ }).first()
   await expect(link).toHaveAttribute('href', /^https:\/\/kite-reader\.example\//)
   await expect(link).toHaveAttribute('target', '_blank')
@@ -47,7 +47,7 @@ test('manga page lists official sources as safe external links', async ({ page }
 
 test('manga without official sources says so', async ({ page }) => {
   await visit(page, '/manga/9005/static-bloom')
-  await expect(page.getByText('No official source listed yet')).toBeVisible()
+  await expect(page.getByText('Aucune source officielle pour l’instant')).toBeVisible()
 })
 
 test('legacy and wrong slugs redirect permanently to the canonical URL', async ({ request }) => {
@@ -59,7 +59,7 @@ test('legacy and wrong slugs redirect permanently to the canonical URL', async (
 test('unknown titles render a 404 page', async ({ page }) => {
   const response = await visit(page, '/manga/123456/nothing')
   expect(response?.status()).toBe(404)
-  await expect(page.getByRole('heading', { name: 'This page was never printed.' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Cette page n’a jamais été imprimée.' })).toBeVisible()
 })
 
 test('creator pages list their works', async ({ page }) => {

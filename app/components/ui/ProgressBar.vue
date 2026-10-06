@@ -11,7 +11,7 @@ const percent = computed(() => (props.value === null ? null : Math.round(Math.mi
     aria-valuemin="0"
     aria-valuemax="100"
     :aria-valuenow="percent ?? undefined"
-    :aria-valuetext="percent === null ? 'Unknown length' : `${percent}%`"
+    :aria-valuetext="percent === null ? 'Longueur inconnue' : `${percent} %`"
     :class="{ 'progress--indeterminate': percent === null }"
   >
     <span class="progress__fill" :style="{ transform: `scaleX(${percent === null ? 0.18 : percent / 100})` }" />

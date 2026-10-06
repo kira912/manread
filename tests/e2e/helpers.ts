@@ -8,8 +8,8 @@ export async function clickUntilVisible(trigger: Locator, target: Locator) {
 }
 
 export async function openSearch(page: Page) {
-  const input = page.getByRole('combobox', { name: 'Search titles and creators' })
-  await clickUntilVisible(page.getByRole('button', { name: /^Search/ }), input)
+  const input = page.getByRole('combobox', { name: 'Rechercher des titres et des auteurs' })
+  await clickUntilVisible(page.getByRole('button', { name: /^Recherche/ }), input)
   return input
 }
 

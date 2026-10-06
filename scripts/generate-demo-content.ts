@@ -4,8 +4,8 @@ import { join } from 'node:path'
 import sharp from 'sharp'
 import { importChapter } from './lib/import-chapter.ts'
 
-const DEMO_SOURCE = { id: 'manread-demo', name: 'Manread demo studio' }
-const DEMO_LICENSE = { name: 'CC0 1.0', url: 'https://creativecommons.org/publicdomain/zero/1.0/', rightsHolder: 'Manread demo studio' }
+const DEMO_SOURCE = { id: 'manread-demo', name: 'Studio de démo Manread' }
+const DEMO_LICENSE = { name: 'CC0 1.0', url: 'https://creativecommons.org/publicdomain/zero/1.0/', rightsHolder: 'Studio de démo Manread' }
 
 interface DemoSeries {
   readonly catalogId: string
@@ -22,11 +22,11 @@ const SERIES: readonly DemoSeries[] = [
     hue: 200,
     vertical: false,
     chapters: [
-      { number: 1, title: 'What the tide returns', pages: 6 },
-      { number: 2, title: 'A letter, unsigned', pages: 5 },
+      { number: 1, title: 'Ce que rend la marée', pages: 6 },
+      { number: 2, title: 'Une lettre sans signature', pages: 5 },
     ],
   },
-  { catalogId: '9007', title: 'Late Bus to Haneul', hue: 220, vertical: true, chapters: [{ number: 1, title: 'Last stop', pages: 4 }] },
+  { catalogId: '9007', title: 'Late Bus to Haneul', hue: 220, vertical: true, chapters: [{ number: 1, title: 'Terminus', pages: 4 }] },
 ]
 
 function pageSvg(series: DemoSeries, chapter: number, page: number, total: number): string {

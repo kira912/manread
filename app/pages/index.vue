@@ -6,9 +6,9 @@ const sections = computed(() => feed.value?.sections ?? {})
 const heroImage = computed(() => feed.value?.hero?.manga.cover.large ?? null)
 
 usePageSeo(() => ({
-  title: 'Discover manga, read it where it lives',
+  title: 'Découvrez des mangas et lisez-les légalement',
   description:
-    'Manread is an editorial index of manga, manhwa and manhua. Discover what is trending, track your reading, and find every official platform where a series is legally available.',
+    'Manread est un index éditorial de mangas, manhwas et manhuas : tendances, suivi de lecture, lecture intégrée des titres autorisés et toutes les plateformes officielles où lire chaque série.',
   path: '/',
   image: heroImage.value,
 }))
@@ -32,7 +32,7 @@ useJsonLd({
     <div v-if="!feed" class="page home__error">
       <h1 class="visually-hidden">Manread</h1>
       <UiErrorState
-        :message="error?.statusCode === 503 ? 'The catalog is catching its breath. Try again in a few seconds.' : undefined"
+        :message="error?.statusCode === 503 ? 'Le catalogue reprend son souffle. Réessayez dans quelques secondes.' : undefined"
         :retrying="status === 'pending'"
         @retry="refresh()"
       />
@@ -49,11 +49,11 @@ useJsonLd({
       <section v-if="sections.trending?.length" class="page home__section" aria-labelledby="trending-heading">
         <HomeSectionHeader
           marker="01"
-          title="The index"
+          title="L’index"
           jp="トレンド"
-          kicker="Trending now"
+          kicker="Les tendances du moment"
           heading-id="trending-heading"
-          :more="{ to: '/search?sort=trending', label: 'Full ranking' }"
+          :more="{ to: '/search?sort=trending', label: 'Classement complet' }"
         />
         <LazyHomeRankIndex hydrate-on-visible :items="sections.trending.slice(0, 10)" />
       </section>
@@ -61,17 +61,17 @@ useJsonLd({
       <section v-if="sections.newReleases?.length" class="page home__section" aria-labelledby="new-heading">
         <HomeSectionHeader
           marker="02"
-          title="Fresh ink"
+          title="Encre fraîche"
           jp="新連載"
-          kicker="New series, still running"
+          kicker="Nouvelles séries en cours de parution"
           heading-id="new-heading"
-          :more="{ to: '/search?status=releasing&sort=newest', label: 'All new series' }"
+          :more="{ to: '/search?status=releasing&sort=newest', label: 'Toutes les nouveautés' }"
         />
-        <LazyHomeStrip hydrate-on-visible :items="sections.newReleases" label="New releases" />
+        <LazyHomeStrip hydrate-on-visible :items="sections.newReleases" label="les nouveautés" />
       </section>
 
       <section v-if="feed.editorsPicks.length" class="page home__section home__section--editorial" aria-labelledby="editors-heading">
-        <HomeSectionHeader marker="03" title="Editor’s picks" jp="編集部選" kicker="Chosen, not computed" heading-id="editors-heading" />
+        <HomeSectionHeader marker="03" title="La sélection" jp="編集部選" kicker="Choisie, pas calculée" heading-id="editors-heading" />
         <LazyHomeSpread hydrate-on-visible :picks="feed.editorsPicks" />
       </section>
 
@@ -80,11 +80,11 @@ useJsonLd({
       <section v-if="sections.hiddenGems?.length" class="page home__section" aria-labelledby="gems-heading">
         <HomeSectionHeader
           marker="04"
-          title="Hidden gems"
+          title="Pépites cachées"
           jp="隠れた名作"
-          kicker="Loved by few, rated by all"
+          kicker="Peu connues, très bien notées"
           heading-id="gems-heading"
-          :more="{ to: '/search?sort=score', label: 'Highest rated' }"
+          :more="{ to: '/search?sort=score', label: 'Les mieux notés' }"
         />
         <LazyHomeMosaic hydrate-on-visible :items="sections.hiddenGems" />
       </section>
@@ -92,17 +92,17 @@ useJsonLd({
       <section v-if="sections.mostFollowed?.length" class="page home__section" aria-labelledby="followed-heading">
         <HomeSectionHeader
           marker="05"
-          title="Most followed"
+          title="Les plus suivis"
           jp="人気"
-          kicker="The all-time ledger"
+          kicker="Le registre de tous les temps"
           heading-id="followed-heading"
-          :more="{ to: '/search?sort=popularity', label: 'Most popular' }"
+          :more="{ to: '/search?sort=popularity', label: 'Les plus populaires' }"
         />
-        <LazyHomeLedger hydrate-on-visible :items="sections.mostFollowed" caption="Most followed manga of all time" />
+        <LazyHomeLedger hydrate-on-visible :items="sections.mostFollowed" caption="Les mangas les plus suivis de tous les temps" />
       </section>
 
       <section v-if="sections.recentlyAdded?.length" class="page home__section" aria-labelledby="recent-heading">
-        <HomeSectionHeader marker="06" title="Just indexed" jp="新着" kicker="Recently added to the catalog" heading-id="recent-heading" />
+        <HomeSectionHeader marker="06" title="Tout juste indexés" jp="新着" kicker="Récemment ajoutés au catalogue" heading-id="recent-heading" />
         <LazyMangaGrid hydrate-on-visible :items="sections.recentlyAdded" density="compact" />
       </section>
     </template>

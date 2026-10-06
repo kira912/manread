@@ -4,7 +4,7 @@ import type { NuxtError } from '#app'
 const props = defineProps<{ error: NuxtError }>()
 const isNotFound = computed(() => props.error.statusCode === 404)
 
-useHead({ title: isNotFound.value ? 'Not found' : 'Something went wrong' })
+useHead({ title: isNotFound.value ? 'Page introuvable' : 'Erreur' })
 useSeoMeta({ robots: 'noindex' })
 
 const recover = () => clearError({ redirect: '/' })
@@ -15,20 +15,20 @@ const recover = () => clearError({ redirect: '/' })
     <section class="page error-page">
       <span class="error-page__code display numeric" aria-hidden="true">{{ error.statusCode }}</span>
       <div class="error-page__copy">
-        <p class="label">{{ isNotFound ? 'Missing page' : 'Unexpected error' }}</p>
+        <p class="label">{{ isNotFound ? 'Page introuvable' : 'Erreur inattendue' }}</p>
         <h1 class="display error-page__title">
-          {{ isNotFound ? 'This page was never printed.' : 'The presses stopped for a moment.' }}
+          {{ isNotFound ? 'Cette page n’a jamais été imprimée.' : 'Les presses se sont arrêtées un instant.' }}
         </h1>
         <p class="error-page__body">
           {{
             isNotFound
-              ? 'The title or page you were looking for is not in the index. It may have moved, or it may never have existed.'
-              : 'Something failed on our side. Your library is stored on this device and is safe.'
+              ? 'Le titre ou la page que vous cherchez n’est pas dans l’index. Elle a peut-être été déplacée, ou n’a jamais existé.'
+              : 'Quelque chose a échoué de notre côté. Votre bibliothèque est enregistrée sur cet appareil et ne risque rien.'
           }}
         </p>
         <div class="error-page__actions">
-          <UiButton variant="primary" icon-after="arrowRight" @click="recover">Back to the index</UiButton>
-          <UiButton variant="line" icon="search" @click="useSearchPalette().show()">Search</UiButton>
+          <UiButton variant="primary" icon-after="arrowRight" @click="recover">Retour à l’index</UiButton>
+          <UiButton variant="line" icon="search" @click="useSearchPalette().show()">Rechercher</UiButton>
         </div>
       </div>
     </section>

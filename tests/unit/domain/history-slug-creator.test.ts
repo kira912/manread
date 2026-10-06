@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { classifyCreatorRole, principalCredits } from '#shared/domain/creator'
+import { classifyCreatorRole, creatorRoleLabel, principalCredits } from '#shared/domain/creator'
+import { genreLabel, genreSlug, languageLabel } from '#shared/domain/labels'
 import { emptyViewHistory, forgetView, recordSearchTerm, recordView, SEARCH_HISTORY_CAPACITY, VIEW_HISTORY_CAPACITY } from '#shared/domain/history'
 import { shortSynopsis } from '#shared/domain/manga'
 import { slugify } from '#shared/domain/slug'
@@ -61,5 +62,17 @@ describe('shortSynopsis', () => {
   it('cuts on a word boundary', () => {
     expect(shortSynopsis(['one two three four'], 10)).toBe('one two…')
     expect(shortSynopsis(['short'], 10)).toBe('short')
+  })
+})
+
+describe('French labels', () => {
+  it('translates known genres, languages and principal roles', () => {
+    expect(genreLabel('Slice of Life')).toBe('Tranche de vie')
+    expect(genreSlug('Slice of Life')).toBe('tranche-de-vie')
+    expect(genreLabel('Unknown Genre')).toBe('Unknown Genre')
+    expect(languageLabel('Japanese')).toBe('Japonais')
+    expect(languageLabel(null)).toBe('Version originale')
+    expect(creatorRoleLabel({ role: 'story_art', roleLabel: 'Story & Art' })).toBe('Scénario & dessin')
+    expect(creatorRoleLabel({ role: 'other', roleLabel: 'Assistant' })).toBe('Assistant')
   })
 })

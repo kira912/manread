@@ -1,3 +1,5 @@
+import { languagePreference } from './labels'
+
 export interface Platform {
   readonly id: string
   readonly name: string
@@ -18,7 +20,6 @@ export interface PlatformAvailability {
   readonly offers: readonly { readonly language: string | null; readonly url: string }[]
 }
 
-const PREFERRED_LANGUAGE = 'English'
 
 export function groupAvailabilityByPlatform(availability: readonly Availability[]): PlatformAvailability[] {
   const groups = new Map<string, { platformName: string; offers: Map<string, { language: string | null; url: string }> }>()
@@ -66,7 +67,7 @@ function comparePlatforms(a: PlatformAvailability, b: PlatformAvailability): num
 }
 
 function languageWeight(language: string | null): number {
-  return language === PREFERRED_LANGUAGE ? 1 : 0
+  return -languagePreference(language)
 }
 
 function normalizeUrlForComparison(url: string): string {

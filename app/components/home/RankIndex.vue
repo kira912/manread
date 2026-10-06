@@ -14,7 +14,7 @@ defineProps<{ items: readonly MangaSummary[] }>()
         </span>
         <span class="rank__body">
           <span class="rank__title display">{{ manga.title }}</span>
-          <span class="rank__meta">{{ metaLine(manga) }}<template v-if="manga.genres.length"> — {{ manga.genres.slice(0, 3).join(' / ') }}</template></span>
+          <span class="rank__meta">{{ metaLine(manga) }}<template v-if="manga.genres.length"> — {{ genreList(manga.genres, 3) }}</template></span>
         </span>
         <UiIcon class="rank__arrow" name="arrowUpRight" :size="22" />
       </MangaLink>

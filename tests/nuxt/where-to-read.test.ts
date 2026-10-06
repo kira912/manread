@@ -24,13 +24,13 @@ describe('WhereToRead', () => {
       expect(link.attributes('rel')).toContain('noopener')
       expect(link.attributes('rel')).toContain('noreferrer')
     }
-    expect(wrapper.text()).toContain('Also in')
-    expect(wrapper.text()).toContain('French')
+    expect(wrapper.text()).toContain('Aussi en')
+    expect(wrapper.text()).toContain('Français')
   })
 
   it('explains when no official source exists and flags degraded data', async () => {
     const wrapper = await mountSuspended(WhereToRead, { props: { mangaId: '1', title: 'Obscure', availability: [], degraded: true } })
-    expect(wrapper.text()).toContain('No official source listed yet')
-    expect(wrapper.find('[role="status"]').text()).toContain('incomplete')
+    expect(wrapper.text()).toContain('Aucune source officielle pour l’instant')
+    expect(wrapper.find('[role="status"]').text()).toContain('incomplète')
   })
 })

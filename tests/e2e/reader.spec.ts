@@ -3,14 +3,14 @@ import { expect, test } from '@playwright/test'
 import { visit } from './helpers'
 
 const CHAPTER_ONE = '/read/9001/manread-demo~saltwater-archive-c1'
-const page = (n: number, total: number) => `Page ${n} of ${total}`
+const page = (n: number, total: number) => `Page ${n} sur ${total}`
 
 test('a manga with licensed chapters offers in-app reading with attribution', async ({ page: browser }) => {
   await visit(browser, '/manga/9001/saltwater-archive')
   const section = browser.locator('#read-here')
-  await expect(section.getByRole('heading', { name: 'Read on Manread' })).toBeVisible()
-  await expect(section.getByRole('link', { name: /What the tide returns/ })).toBeVisible()
-  await expect(section.getByText(/© Manread demo studio/)).toBeVisible()
+  await expect(section.getByRole('heading', { name: 'Lire sur Manread' })).toBeVisible()
+  await expect(section.getByRole('link', { name: /Ce que rend la marée/ })).toBeVisible()
+  await expect(section.getByText(/© Studio de démo Manread/)).toBeVisible()
   await expect(section.getByRole('link', { name: 'CC0 1.0' })).toHaveAttribute('href', 'https://creativecommons.org/publicdomain/zero/1.0/')
 })
 
@@ -23,7 +23,7 @@ test('titles without licensed chapters keep only official links', async ({ page:
 test('reading a chapter with the keyboard, then continuing to the next one', async ({ page: browser, isMobile }) => {
   test.skip(isMobile, 'keyboard flow')
   await visit(browser, '/manga/9001/saltwater-archive')
-  await browser.locator('#read-here').getByRole('link', { name: /Start reading/ }).click()
+  await browser.locator('#read-here').getByRole('link', { name: /Commencer la lecture/ }).click()
   await expect(browser).toHaveURL(CHAPTER_ONE)
   await expect(browser.getByRole('img', { name: page(1, 6) })).toBeVisible()
 
@@ -35,15 +35,15 @@ test('reading a chapter with the keyboard, then continuing to the next one', asy
   await expect(browser.getByRole('img', { name: page(6, 6) })).toBeVisible()
   await browser.keyboard.press('Space')
 
-  await expect(browser.getByRole('heading', { name: 'Keep going?' })).toBeVisible()
-  await browser.getByRole('link', { name: /Chapter 2 — A letter, unsigned/ }).click()
+  await expect(browser.getByRole('heading', { name: 'On continue ?' })).toBeVisible()
+  await browser.getByRole('link', { name: /Chapitre 2 — Une lettre sans signature/ }).click()
   await expect(browser).toHaveURL(/saltwater-archive-c2$/)
   await expect(browser.getByRole('img', { name: page(1, 5) })).toBeVisible()
 
   await visit(browser, '/library')
   const row = browser.getByRole('article').filter({ hasText: 'Saltwater Archive' })
   await expect(row.getByText('Ch. 1')).toBeVisible()
-  await expect(row.getByRole('link', { name: /Resume here/ })).toHaveAttribute('href', /saltwater-archive-c2$/)
+  await expect(row.getByRole('link', { name: /Reprendre ici/ })).toHaveAttribute('href', /saltwater-archive-c2$/)
 })
 
 test('the reader resumes at the exact page after a reload', async ({ page: browser, isMobile }) => {
@@ -57,7 +57,7 @@ test('the reader resumes at the exact page after a reload', async ({ page: brows
   await visit(browser, CHAPTER_ONE)
   await expect(browser.getByRole('img', { name: page(3, 6) })).toBeVisible()
   await visit(browser, '/manga/9001/saltwater-archive')
-  await expect(browser.locator('.manga__cta').getByRole('link', { name: 'Continue ch. 1 · p. 3' })).toBeVisible()
+  await expect(browser.locator('.manga__cta').getByRole('link', { name: 'Continuer ch. 1 · p. 3' })).toBeVisible()
 })
 
 test('touch readers turn pages with taps and swipes in reading direction', async ({ page: browser, isMobile }) => {
@@ -84,15 +84,15 @@ test('manhwa open as a vertical scroll and track progress while scrolling', asyn
   await expect(browser.getByRole('img', { name: page(1, 4) })).toBeVisible()
   await expect(browser.getByRole('img', { name: page(4, 4) })).toBeAttached()
   await browser.getByRole('img', { name: page(4, 4) }).scrollIntoViewIfNeeded()
-  await expect(browser.getByRole('heading', { name: /all caught up/ })).toBeVisible()
+  await expect(browser.getByRole('heading', { name: /Vous êtes à jour/ })).toBeVisible()
   await expect.poll(() => browser.evaluate(() => localStorage.getItem('manread:library') ?? '')).toContain('"chapter":1')
 })
 
 test('reader preferences can switch layout and persist', async ({ page: browser }) => {
   await visit(browser, CHAPTER_ONE)
-  await browser.getByRole('button', { name: 'Reader settings' }).click()
-  await browser.getByText('Vertical scroll', { exact: true }).click()
-  await browser.getByRole('button', { name: 'Close settings' }).click()
+  await browser.getByRole('button', { name: 'Réglages du lecteur' }).click()
+  await browser.getByText('Défilement vertical', { exact: true }).click()
+  await browser.getByRole('button', { name: 'Fermer les réglages' }).click()
   await expect(browser.getByRole('img', { name: page(6, 6) })).toBeAttached()
   await visit(browser, CHAPTER_ONE)
   await expect(browser.getByRole('img', { name: page(6, 6) })).toBeAttached()
@@ -114,8 +114,8 @@ test('chapter pages are served as immutable static files', async ({ request }) =
 
 test('the reader has no detectable WCAG A/AA violations', async ({ page: browser }) => {
   await visit(browser, CHAPTER_ONE)
-  await browser.getByRole('button', { name: 'Reader settings' }).click()
-  await expect(browser.getByRole('dialog', { name: 'Reader settings' })).toBeVisible()
+  await browser.getByRole('button', { name: 'Réglages du lecteur' }).click()
+  await expect(browser.getByRole('dialog', { name: 'Réglages du lecteur' })).toBeVisible()
   const results = await new AxeBuilder({ page: browser }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()
   expect(results.violations.map(violation => `${violation.id}: ${violation.nodes.map(node => node.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([])
 })

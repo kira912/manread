@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { HomeHero } from '#shared/domain/discovery'
+import { genreLabel } from '#shared/domain/labels'
 import { toSnapshot } from '#shared/domain/library'
 import { mangaPath, originLabel, originLanguage, shortSynopsis, statusLabel } from '#shared/domain/manga'
 
@@ -49,44 +50,44 @@ useHead({
     </div>
 
     <div class="hero__copy">
-      <p class="label hero__kicker"><span class="hero__dot" aria-hidden="true" /> Trending now · Nº 01</p>
+      <p class="label hero__kicker"><span class="hero__dot" aria-hidden="true" /> Tendance · Nº 01</p>
       <h1 id="hero-title" class="hero__title display">
         <MangaLink :manga="manga">{{ manga.title }}</MangaLink>
       </h1>
 
       <dl class="hero__facts">
-        <div><dt class="label">Status</dt><dd>{{ statusLabel(manga.status) }}</dd></div>
-        <div v-if="manga.chapters"><dt class="label">Chapters</dt><dd class="numeric">{{ manga.chapters }}</dd></div>
-        <div v-if="manga.startYear"><dt class="label">Since</dt><dd class="numeric">{{ manga.startYear }}</dd></div>
-        <div><dt class="label">Origin</dt><dd>{{ originLabel(manga.origin) }}</dd></div>
+        <div><dt class="label">Statut</dt><dd>{{ statusLabel(manga.status) }}</dd></div>
+        <div v-if="manga.chapters"><dt class="label">Chapitres</dt><dd class="numeric">{{ manga.chapters }}</dd></div>
+        <div v-if="manga.startYear"><dt class="label">Depuis</dt><dd class="numeric">{{ manga.startYear }}</dd></div>
+        <div><dt class="label">Origine</dt><dd>{{ originLabel(manga.origin) }}</dd></div>
       </dl>
 
       <p v-if="synopsis" class="hero__synopsis">{{ synopsis }}</p>
 
       <p class="hero__genres">
         <template v-for="(genre, index) in manga.genres.slice(0, 4)" :key="genre">
-          <span v-if="index" aria-hidden="true"> / </span>{{ genre }}
+          <span v-if="index" aria-hidden="true"> / </span>{{ genreLabel(genre) }}
         </template>
       </p>
 
       <p v-if="visiblePlatforms.length" class="hero__platforms">
-        <span class="label">Read on</span>
+        <span class="label">À lire sur</span>
         <span>
           {{ visiblePlatforms.map(platform => platform.name).join(', ') }}<template v-if="hiddenPlatformCount"> +{{ hiddenPlatformCount }}</template>
         </span>
       </p>
 
       <div class="hero__actions">
-        <UiButton variant="accent" :to="`${mangaPath(manga)}#where-to-read`" icon-after="arrowUpRight">Where to read</UiButton>
+        <UiButton variant="accent" :to="`${mangaPath(manga)}#where-to-read`" icon-after="arrowUpRight">Où lire</UiButton>
         <UiButton
           v-if="ready && !entry"
           variant="line"
           icon="plus"
           @click="setStatus(toSnapshot(manga), 'plan_to_read')"
         >
-          Plan to read
+          À lire plus tard
         </UiButton>
-        <UiButton v-else-if="ready && entry" variant="line" icon="check" to="/library">In your library</UiButton>
+        <UiButton v-else-if="ready && entry" variant="line" icon="check" to="/library">Dans votre bibliothèque</UiButton>
       </div>
     </div>
   </section>

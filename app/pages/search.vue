@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { genreLabel, languageLabel } from '#shared/domain/labels'
 import { originLabel, statusLabel } from '#shared/domain/manga'
 import {
   activeFilterCount,
@@ -30,15 +31,15 @@ const platformNames = computed(() => new Map(facets.value.platforms.map(platform
 const activeChips = computed(() => {
   const current = query.value
   const chips: { key: string; label: string; remove: Partial<SearchQuery> }[] = []
-  for (const genre of current.genres) chips.push({ key: `g-${genre}`, label: genre, remove: { genres: current.genres.filter(item => item !== genre) } })
+  for (const genre of current.genres) chips.push({ key: `g-${genre}`, label: genreLabel(genre), remove: { genres: current.genres.filter(item => item !== genre) } })
   if (current.status) chips.push({ key: 'status', label: statusLabel(current.status), remove: { status: null } })
   if (current.origin) chips.push({ key: 'origin', label: originLabel(current.origin), remove: { origin: null } })
   if (current.yearFrom !== null || current.yearTo !== null) {
     chips.push({ key: 'years', label: `${current.yearFrom ?? '…'}–${current.yearTo ?? '…'}`, remove: { yearFrom: null, yearTo: null } })
   }
-  if (current.readableOnly) chips.push({ key: 'readable', label: 'Officially readable', remove: { readableOnly: false } })
+  if (current.readableOnly) chips.push({ key: 'readable', label: 'Lisible officiellement', remove: { readableOnly: false } })
   for (const language of current.languages) {
-    chips.push({ key: `l-${language}`, label: language, remove: { languages: current.languages.filter(item => item !== language) } })
+    chips.push({ key: `l-${language}`, label: languageLabel(language), remove: { languages: current.languages.filter(item => item !== language) } })
   }
   for (const platformId of current.platformIds) {
     chips.push({
@@ -50,7 +51,7 @@ const activeChips = computed(() => {
   return chips
 })
 
-const heading = computed(() => (query.value.text ? `“${query.value.text}”` : 'Browse the index'))
+const heading = computed(() => (query.value.text ? `« ${query.value.text} »` : 'Parcourir l’index'))
 
 function apply(next: SearchQuery) {
   void router.replace({ query: toSearchUrlParams(next) })
@@ -70,8 +71,8 @@ function reset() {
 }
 
 usePageSeo(() => ({
-  title: query.value.text ? `Search: ${query.value.text}` : 'Browse manga',
-  description: 'Search manga, manhwa and manhua by title, genre, status, year, language and official reading platform.',
+  title: query.value.text ? `Recherche : ${query.value.text}` : 'Parcourir les mangas',
+  description: 'Recherchez des mangas, manhwas et manhuas par titre, genre, statut, année, langue et plateforme de lecture officielle.',
   path: '/search',
   noindex: hasSearchCriteria(query.value),
 }))
@@ -80,10 +81,10 @@ usePageSeo(() => ({
 <template>
   <div class="page search">
     <header class="search__head">
-      <p class="label">Search</p>
+      <p class="label">Recherche</p>
       <h1 class="search__title display">{{ heading }}</h1>
       <form class="search__form" role="search" action="/search" method="get" @submit.prevent="submit">
-        <label for="search-input" class="visually-hidden">Search titles</label>
+        <label for="search-input" class="visually-hidden">Rechercher un titre</label>
         <UiIcon name="search" :size="22" class="search__glyph" />
         <input
           id="search-input"
@@ -91,35 +92,35 @@ usePageSeo(() => ({
           class="search__input"
           name="q"
           type="search"
-          placeholder="Search titles…"
+          placeholder="Rechercher un titre…"
           autocomplete="off"
           enterkeyhint="search"
           maxlength="100"
         />
-        <UiButton type="submit" variant="primary" size="sm">Search</UiButton>
+        <UiButton type="submit" variant="primary" size="sm">Rechercher</UiButton>
       </form>
     </header>
 
     <div class="search__layout">
-      <aside class="search__sidebar" aria-label="Filters">
+      <aside class="search__sidebar" aria-label="Filtres">
         <SearchFilters :query="query" :facets="facets" @change="apply" />
       </aside>
 
-      <section class="search__main" aria-label="Results">
+      <section class="search__main" aria-label="Résultats">
         <div class="search__toolbar">
           <UiButton class="search__filters-toggle" variant="line" size="sm" icon="filters" @click="filtersOpen = true">
-            Filters<template v-if="filterCount"> · {{ filterCount }}</template>
+            Filtres<template v-if="filterCount"> · {{ filterCount }}</template>
           </UiButton>
-          <ul v-if="activeChips.length" class="search__chips" role="list" aria-label="Active filters">
+          <ul v-if="activeChips.length" class="search__chips" role="list" aria-label="Filtres actifs">
             <li v-for="chip in activeChips" :key="chip.key">
               <button type="button" class="search__chip" @click="apply({ ...query, ...chip.remove, page: 1 })">
                 {{ chip.label }}
                 <UiIcon name="close" :size="14" />
-                <span class="visually-hidden">Remove filter</span>
+                <span class="visually-hidden">Retirer le filtre</span>
               </button>
             </li>
             <li>
-              <button type="button" class="search__clear label" @click="reset">Clear all</button>
+              <button type="button" class="search__clear label" @click="reset">Tout effacer</button>
             </li>
           </ul>
         </div>
@@ -127,11 +128,11 @@ usePageSeo(() => ({
       </section>
     </div>
 
-    <UiDialog v-model:open="filtersOpen" label="Filters" variant="sheet">
+    <UiDialog v-model:open="filtersOpen" label="Filtres" variant="sheet">
       <div v-if="filtersOpen" class="search__sheet">
         <div class="search__sheet-head">
-          <h2 class="display">Filters</h2>
-          <UiButton variant="primary" size="sm" @click="filtersOpen = false">Show results</UiButton>
+          <h2 class="display">Filtres</h2>
+          <UiButton variant="primary" size="sm" @click="filtersOpen = false">Voir les résultats</UiButton>
         </div>
         <SearchFilters :query="query" :facets="facets" @change="apply" />
       </div>

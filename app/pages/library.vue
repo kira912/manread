@@ -3,7 +3,7 @@ import { LIBRARY_SORTS, libraryStats, queryLibrary, READING_STATUSES, readingSta
 
 type LibraryTab = LibraryView | 'history'
 
-const SORT_LABELS: Record<LibrarySort, string> = { updated: 'Recently updated', added: 'Recently added', title: 'Title A–Z', progress: 'Progress' }
+const SORT_LABELS: Record<LibrarySort, string> = { updated: 'Modifiés récemment', added: 'Ajoutés récemment', title: 'Titre A–Z', progress: 'Progression' }
 const TAB_VALUES: readonly LibraryTab[] = ['all', ...READING_STATUSES, 'favorites', 'history']
 
 const route = useRoute()
@@ -21,30 +21,30 @@ const sortOptions = LIBRARY_SORTS.map(value => ({ value, label: SORT_LABELS[valu
 
 const stats = computed(() => libraryStats(library.value))
 const tabs = computed(() => [
-  { value: 'all' as const, label: 'All', count: stats.value.all },
+  { value: 'all' as const, label: 'Tout', count: stats.value.all },
   ...READING_STATUSES.map(status => ({ value: status, label: readingStatusLabel(status), count: stats.value[status] })),
-  { value: 'favorites' as const, label: 'Favorites', count: stats.value.favorites },
-  { value: 'history' as const, label: 'History', count: history.value.entries.length },
+  { value: 'favorites' as const, label: 'Favoris', count: stats.value.favorites },
+  { value: 'history' as const, label: 'Historique', count: history.value.entries.length },
 ])
 const entries = computed(() => (tab.value === 'history' ? [] : queryLibrary(library.value, { view: tab.value, text: text.value, sort: sort.value })))
 const emptyCopy = computed(() =>
   stats.value.all === 0
-    ? { title: 'Your shelves are empty', body: 'Add titles from any page and they will wait for you here, with your progress and where you read them.' }
+    ? { title: 'Vos étagères sont vides', body: 'Ajoutez des titres depuis n’importe quelle page : ils vous attendront ici, avec votre progression et l’endroit où vous les lisez.' }
     : text.value
-      ? { title: 'No match on your shelves', body: `Nothing in this view matches “${text.value}”.` }
-      : { title: 'Nothing here yet', body: 'Titles you file under this status will appear here.' },
+      ? { title: 'Rien sur vos étagères', body: `Aucun titre de cette vue ne correspond à « ${text.value} ».` }
+      : { title: 'Rien ici pour l’instant', body: 'Les titres que vous rangez dans cette catégorie apparaîtront ici.' },
 )
 
-usePageSeo({ title: 'Your library', description: 'Your reading list, progress and history.', path: '/library', noindex: true })
+usePageSeo({ title: 'Votre bibliothèque', description: 'Votre liste de lecture, votre progression et votre historique.', path: '/library', noindex: true })
 </script>
 
 <template>
   <div class="page library">
     <header class="library__head">
-      <p class="label">Stored on this device</p>
-      <h1 class="display library__title">Your library</h1>
+      <p class="label">Enregistrée sur cet appareil</p>
+      <h1 class="display library__title">Votre bibliothèque</h1>
       <p v-if="ready" class="library__stats numeric">
-        {{ plural(stats.all, 'title') }} · {{ stats.reading }} reading · {{ stats.completed }} completed · {{ plural(stats.favorites, 'favorite') }}
+        {{ plural(stats.all, 'titre') }} · {{ stats.reading }} en lecture · {{ plural(stats.completed, 'lu', 'lus') }} · {{ plural(stats.favorites, 'favori') }}
       </p>
     </header>
 
@@ -54,7 +54,7 @@ usePageSeo({ title: 'Your library', description: 'Your reading list, progress an
 
     <template v-else>
       <div class="library__nav">
-        <UiTabs v-model="tab" :items="tabs" label="Library views" panel-id="library-panel" />
+        <UiTabs v-model="tab" :items="tabs" label="Vues de la bibliothèque" panel-id="library-panel" />
       </div>
 
       <div id="library-panel" class="library__panel" role="tabpanel" :aria-labelledby="`library-panel-tab-${tab}`" tabindex="0">
@@ -63,10 +63,10 @@ usePageSeo({ title: 'Your library', description: 'Your reading list, progress an
           <div class="library__toolbar">
             <label class="library__filter">
               <UiIcon name="search" :size="18" />
-              <span class="visually-hidden">Filter your library</span>
-              <input v-model="text" type="search" placeholder="Filter by title…" autocomplete="off" />
+              <span class="visually-hidden">Filtrer votre bibliothèque</span>
+              <input v-model="text" type="search" placeholder="Filtrer par titre…" autocomplete="off" />
             </label>
-            <UiSelect v-model="sort" label="Sort" :options="sortOptions" hide-label />
+            <UiSelect v-model="sort" label="Trier" :options="sortOptions" hide-label />
             <LibraryBackup />
           </div>
 
@@ -78,8 +78,8 @@ usePageSeo({ title: 'Your library', description: 'Your reading list, progress an
           <UiEmptyState v-else :title="emptyCopy.title" glyph="棚">
             <p>{{ emptyCopy.body }}</p>
             <template v-if="stats.all === 0" #actions>
-              <UiButton variant="primary" to="/" icon-after="arrowRight">Discover titles</UiButton>
-              <UiButton variant="line" icon="search" @click="useSearchPalette().show()">Search</UiButton>
+              <UiButton variant="primary" to="/" icon-after="arrowRight">Découvrir des titres</UiButton>
+              <UiButton variant="line" icon="search" @click="useSearchPalette().show()">Rechercher</UiButton>
             </template>
           </UiEmptyState>
         </template>

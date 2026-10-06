@@ -24,10 +24,10 @@ const { data: details } = detailsResult
 const { data: chapterList } = listResult
 
 if (chapterError.value?.statusCode === 404 || (readable.value && readable.value.chapter.mangaId !== mangaId)) {
-  throw createError({ statusCode: 404, statusMessage: 'Chapter not found', fatal: true })
+  throw createError({ statusCode: 404, statusMessage: 'Chapitre introuvable', fatal: true })
 }
 if (!readable.value || !details.value) {
-  throw createError({ statusCode: 503, statusMessage: 'Reader unavailable', fatal: true })
+  throw createError({ statusCode: 503, statusMessage: 'Lecteur indisponible', fatal: true })
 }
 
 const readableChapter = computed(() => readable.value!)
@@ -126,7 +126,7 @@ onBeforeUnmount(() => {
 
 usePageSeo(() => ({
   title: `${chapterLabel(readableChapter.value.chapter)} · ${manga.value.title}`,
-  description: `Read ${chapterLabel(readableChapter.value.chapter)} of ${manga.value.title}, published by ${readableChapter.value.chapter.sourceName} under ${readableChapter.value.chapter.license.name}.`,
+  description: `Lisez le ${chapterLabel(readableChapter.value.chapter).toLowerCase()} de ${manga.value.title}, publié par ${readableChapter.value.chapter.sourceName} sous licence ${readableChapter.value.chapter.license.name}.`,
   path: route.path,
   image: manga.value.cover.large,
   noindex: true,
@@ -178,7 +178,7 @@ usePageSeo(() => ({
           :manga-to="mangaPath(manga)"
           :title="manga.title"
         />
-        <p class="visually-hidden" aria-live="polite">{{ finished ? 'End of chapter' : `Page ${page + 1} of ${pageCount}` }}</p>
+        <p class="visually-hidden" aria-live="polite">{{ finished ? 'Fin du chapitre' : `Page ${page + 1} sur ${pageCount}` }}</p>
       </template>
 
       <ReaderVertical v-else ref="vertical" :pages="readableChapter.pages" :fit="settings.fit" @update:page="value => (page = value)" @toggle-chrome="toggleChrome">

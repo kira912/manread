@@ -42,7 +42,7 @@ function commitDraft() {
   <div class="stepper">
     <label class="label stepper__label" :for="inputId">{{ label }}</label>
     <div class="stepper__control">
-      <button type="button" class="stepper__button" :disabled="atMin" :aria-label="`Decrease ${label.toLowerCase()}`" @click="commit(modelValue - 1)">
+      <button type="button" class="stepper__button" :disabled="atMin" :aria-label="`Diminuer : ${label.toLowerCase()}`" @click="commit(modelValue - 1)">
         <UiIcon name="minus" :size="16" />
       </button>
       <input
@@ -59,7 +59,7 @@ function commitDraft() {
         @keydown.down.prevent="commit(modelValue - 1)"
       />
       <span v-if="suffix" class="stepper__suffix numeric" aria-hidden="true">{{ suffix }}</span>
-      <button type="button" class="stepper__button" :disabled="atMax" :aria-label="`Increase ${label.toLowerCase()}`" @click="commit(modelValue + 1)">
+      <button type="button" class="stepper__button" :disabled="atMax" :aria-label="`Augmenter : ${label.toLowerCase()}`" @click="commit(modelValue + 1)">
         <UiIcon name="plus" :size="16" />
       </button>
     </div>

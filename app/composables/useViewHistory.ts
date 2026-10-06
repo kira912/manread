@@ -6,7 +6,7 @@ import { viewHistoryStore } from '~/infrastructure/storage/stores'
 export const VIEW_HISTORY_STATE_KEY = 'view-history'
 
 export function useViewHistory() {
-  const { state: history, commit, update, ensureHydrated } = usePersistedState<ViewHistory>(VIEW_HISTORY_STATE_KEY, viewHistoryStore, emptyViewHistory, 'history')
+  const { state: history, commit, update, ensureHydrated } = usePersistedState<ViewHistory>(VIEW_HISTORY_STATE_KEY, viewHistoryStore, emptyViewHistory, 'historique')
 
   return {
     hydrate: ensureHydrated,

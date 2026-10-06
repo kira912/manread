@@ -36,7 +36,7 @@ function retry() {
       :src="source"
       :width="page.width"
       :height="page.height"
-      :alt="`Page ${page.index + 1} of ${pageCount}`"
+      :alt="`Page ${page.index + 1} sur ${pageCount}`"
       :loading="eager ? 'eager' : 'lazy'"
       :fetchpriority="eager ? 'high' : 'auto'"
       decoding="async"
@@ -46,8 +46,8 @@ function retry() {
     />
     <span v-if="status === 'loading'" class="page-image__loading" aria-hidden="true" />
     <figcaption v-if="status === 'error'" class="page-image__error" role="alert">
-      <span>Page {{ page.index + 1 }} didn't load.</span>
-      <UiButton size="sm" variant="line" icon="refresh" @click.stop="retry">Retry</UiButton>
+      <span>La page {{ page.index + 1 }} n’a pas pu être chargée.</span>
+      <UiButton size="sm" variant="line" icon="refresh" @click.stop="retry">Réessayer</UiButton>
     </figcaption>
   </figure>
 </template>

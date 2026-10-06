@@ -23,13 +23,13 @@ function choose(status: ReadingStatus) {
     </template>
 
     <div v-else-if="!entry" class="control__actions">
-      <UiButton variant="primary" icon="plus" @click="setStatus(manga, 'plan_to_read')">Add to library</UiButton>
-      <UiButton variant="line" icon="bookmark" :pressed="false" @click="toggleFavorite(manga)">Favorite</UiButton>
+      <UiButton variant="primary" icon="plus" @click="setStatus(manga, 'plan_to_read')">Ajouter à ma bibliothèque</UiButton>
+      <UiButton variant="line" icon="bookmark" :pressed="false" @click="toggleFavorite(manga)">Favori</UiButton>
     </div>
 
     <div v-else class="control__panel">
       <fieldset class="control__statuses">
-        <legend class="label">In your library</legend>
+        <legend class="label">Dans votre bibliothèque</legend>
         <div class="control__chips">
           <label v-for="status in READING_STATUSES" :key="status" class="control__chip" :class="{ 'is-checked': entry.status === status }">
             <input
@@ -46,7 +46,7 @@ function choose(status: ReadingStatus) {
       </fieldset>
 
       <div class="control__row">
-        <UiNumberStepper v-model="chapter" label="Last chapter read" :max="manga.chapters" :suffix="manga.chapters ? `/ ${manga.chapters}` : undefined" />
+        <UiNumberStepper v-model="chapter" label="Dernier chapitre lu" :max="manga.chapters" :suffix="manga.chapters ? `/ ${manga.chapters}` : undefined" />
         <div class="control__secondary">
           <UiButton
             variant="line"
@@ -55,9 +55,9 @@ function choose(status: ReadingStatus) {
             :pressed="entry.favorite"
             @click="toggleFavorite(manga)"
           >
-            {{ entry.favorite ? 'Favorite' : 'Mark favorite' }}
+            {{ entry.favorite ? 'Favori' : 'Mettre en favori' }}
           </UiButton>
-          <UiButton variant="ghost" size="sm" icon="trash" @click="remove(manga.id)">Remove</UiButton>
+          <UiButton variant="ghost" size="sm" icon="trash" @click="remove(manga.id)">Retirer</UiButton>
         </div>
       </div>
 
@@ -69,9 +69,9 @@ function choose(status: ReadingStatus) {
         rel="noopener noreferrer external"
         @click="openOfficialPlatform({ mangaId: manga.id, title: manga.title, platformName: entry.preferredPlatform.name, nextChapter: entry.chapter + 1 })"
       >
-        Resume on {{ entry.preferredPlatform.name }} — ch. {{ entry.chapter + 1 }}
+        Reprendre sur {{ entry.preferredPlatform.name }} — ch. {{ entry.chapter + 1 }}
         <UiIcon name="arrowUpRight" :size="16" />
-        <span class="visually-hidden">(opens in a new tab)</span>
+        <span class="visually-hidden">(s’ouvre dans un nouvel onglet)</span>
       </a>
     </div>
   </div>

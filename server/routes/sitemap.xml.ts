@@ -1,5 +1,5 @@
 import { mangaPath } from '#shared/domain/manga'
-import { slugify } from '#shared/domain/slug'
+import { genreSlug } from '#shared/domain/labels'
 import { getSearchFacets, listSitemapManga } from '../application/catalog-queries'
 import { describeError } from '../application/context'
 import { useCatalogContext, useLogger } from '../utils/container'
@@ -12,7 +12,7 @@ export default defineEventHandler(async event => {
   const [manga, facets] = await Promise.allSettled([listSitemapManga(context), getSearchFacets(context)])
 
   const paths = ['/']
-  if (facets.status === 'fulfilled') paths.push(...facets.value.genres.map(genre => `/genre/${slugify(genre)}`))
+  if (facets.status === 'fulfilled') paths.push(...facets.value.genres.map(genre => `/genre/${genreSlug(genre)}`))
   if (manga.status === 'fulfilled') paths.push(...manga.value.map(mangaPath))
 
   for (const failure of [manga, facets].filter(result => result.status === 'rejected')) {

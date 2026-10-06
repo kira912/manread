@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { creatorPath } from '#shared/domain/creator'
+import { classifyCreatorRole, creatorPath, creatorRoleLabel } from '#shared/domain/creator'
 
 definePageMeta({
   validate: route => typeof route.params.id === 'string' && /^[a-z0-9-]{1,40}$/.test(route.params.id),
@@ -9,7 +9,7 @@ const route = useRoute()
 const id = computed(() => String(route.params.id))
 const { data: creator, error, refresh, status } = await useCreator(id)
 
-if (error.value?.statusCode === 404) throw createError({ statusCode: 404, statusMessage: 'Creator not found', fatal: true })
+if (error.value?.statusCode === 404) throw createError({ statusCode: 404, statusMessage: 'Auteur introuvable', fatal: true })
 if (creator.value && route.params.slug !== creator.value.slug) {
   await navigateTo(creatorPath(creator.value), { redirectCode: 301, replace: true })
 }
@@ -20,10 +20,10 @@ const biography = computed(() => (bioExpanded.value ? creator.value?.biography :
 
 const siteUrl = useSiteUrl()
 usePageSeo(() => ({
-  title: creator.value ? `${creator.value.name} — works & where to read` : 'Creator',
+  title: creator.value ? `${creator.value.name} — œuvres et où les lire` : 'Auteur',
   description: creator.value
-    ? `${creator.value.name}'s manga: ${creator.value.works.slice(0, 4).map(work => work.manga.title).join(', ')}. Find where to read each one legally.`
-    : 'Creator',
+    ? `Les mangas de ${creator.value.name} : ${creator.value.works.slice(0, 4).map(work => work.manga.title).join(', ')}. Découvrez où lire chacun d’eux légalement.`
+    : 'Auteur',
   path: creator.value ? creatorPath(creator.value) : route.path,
   image: creator.value?.image,
   type: 'profile',
@@ -41,9 +41,9 @@ useJsonLd(() =>
     <UiErrorState v-if="!creator" :retrying="status === 'pending'" @retry="refresh()" />
     <template v-else>
       <header class="creator__head">
-        <img v-if="creator.image" class="creator__portrait" :src="creator.image" :alt="`Portrait of ${creator.name}`" width="160" height="220" />
+        <img v-if="creator.image" class="creator__portrait" :src="creator.image" :alt="`Portrait de ${creator.name}`" width="160" height="220" />
         <div class="creator__copy">
-          <p class="label">Creator · {{ creator.works.length }} works indexed</p>
+          <p class="label">Auteur · {{ plural(creator.works.length, 'œuvre indexée', 'œuvres indexées') }}</p>
           <h1 class="display creator__name">{{ creator.name }}</h1>
           <p v-if="creator.nativeName" class="creator__native jp">{{ creator.nativeName }}</p>
           <div v-if="biography.length" class="creator__bio">
@@ -55,17 +55,17 @@ useJsonLd(() =>
               :aria-expanded="bioExpanded"
               @click="bioExpanded = !bioExpanded"
             >
-              {{ bioExpanded ? 'Show less' : 'Full biography' }}
+              {{ bioExpanded ? 'Réduire' : 'Biographie complète' }}
             </button>
           </div>
         </div>
       </header>
 
       <section aria-labelledby="works-heading">
-        <HomeSectionHeader marker="—" title="Works" jp="作品" heading-id="works-heading" />
+        <HomeSectionHeader marker="—" title="Œuvres" jp="作品" heading-id="works-heading" />
         <ol class="creator__works" role="list">
           <li v-for="work in creator.works" :key="work.manga.id">
-            <MangaTile :manga="work.manga" :caption="`${work.roleLabel} · ${work.manga.startYear ?? '—'}`" />
+            <MangaTile :manga="work.manga" :caption="`${creatorRoleLabel({ role: classifyCreatorRole(work.roleLabel), roleLabel: work.roleLabel })} · ${work.manga.startYear ?? '—'}`" />
           </li>
         </ol>
       </section>

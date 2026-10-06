@@ -5,16 +5,16 @@ const props = defineProps<{ manga: Manga }>()
 
 const facts = computed(() =>
   [
-    { label: 'Status', value: statusLabel(props.manga.status) },
-    { label: 'Type', value: props.manga.format === 'one_shot' ? 'One-shot' : originLabel(props.manga.origin) },
+    { label: 'Statut', value: statusLabel(props.manga.status) },
+    { label: 'Type', value: props.manga.format === 'one_shot' ? 'One shot' : originLabel(props.manga.origin) },
     {
-      label: 'Published',
+      label: 'Parution',
       value: props.manga.startYear ? `${props.manga.startYear}${props.manga.endYear && props.manga.endYear !== props.manga.startYear ? `–${props.manga.endYear}` : props.manga.status === 'releasing' ? '–' : ''}` : null,
     },
-    { label: 'Chapters', value: props.manga.chapters ? String(props.manga.chapters) : props.manga.status === 'releasing' ? 'Ongoing' : null },
-    { label: 'Volumes', value: props.manga.volumes ? String(props.manga.volumes) : null },
-    { label: 'Score', value: formatScore(props.manga.score) },
-    { label: 'Readers', value: props.manga.popularity ? compactNumber(props.manga.popularity) : null },
+    { label: 'Chapitres', value: props.manga.chapters ? String(props.manga.chapters) : props.manga.status === 'releasing' ? 'En cours' : null },
+    { label: 'Tomes', value: props.manga.volumes ? String(props.manga.volumes) : null },
+    { label: 'Note', value: formatScore(props.manga.score) },
+    { label: 'Lecteurs', value: props.manga.popularity ? compactNumber(props.manga.popularity) : null },
   ].filter((fact): fact is { label: string; value: string } => Boolean(fact.value)),
 )
 </script>

@@ -6,7 +6,7 @@ export function useReaderPreferences() {
     'reader-preferences',
     readerPreferencesStore,
     () => ({ ...DEFAULT_READER_PREFERENCES }),
-    'reader preferences',
+    'préférences du lecteur',
   )
 
   return {

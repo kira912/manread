@@ -37,11 +37,11 @@ export function createBrowserStore<T>(name: string, schema: Parser<T>, fallback:
 
   const save = (value: T): void => {
     const storage = resolveStorage()
-    if (!storage) throw new StorageUnavailableError('Browser storage is disabled')
+    if (!storage) throw new StorageUnavailableError('Le stockage du navigateur est désactivé')
     try {
       storage.setItem(key, JSON.stringify(value))
     } catch (error) {
-      throw new StorageUnavailableError('Browser storage is full or blocked', { cause: error })
+      throw new StorageUnavailableError('Le stockage du navigateur est plein ou bloqué', { cause: error })
     }
   }
 

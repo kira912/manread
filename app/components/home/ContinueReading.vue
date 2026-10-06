@@ -13,11 +13,11 @@ const entries = computed(() => (ready.value ? continueReading(library.value, CON
   <section v-if="entries.length" class="page continue" aria-labelledby="continue-heading">
     <HomeSectionHeader
       marker="Yours"
-      title="Continue reading"
+      title="Reprendre la lecture"
       jp="続きから"
-      kicker="Picked up where you left off"
+      kicker="Là où vous vous étiez arrêté"
       heading-id="continue-heading"
-      :more="{ to: '/library', label: 'Library' }"
+      :more="{ to: '/library', label: 'Bibliothèque' }"
     />
     <ol class="continue__list" role="list">
       <li v-for="entry in entries" :key="entry.manga.id" class="continue__card">
@@ -29,14 +29,14 @@ const entries = computed(() => (ready.value ? continueReading(library.value, CON
           <p class="continue__progress numeric">
             Ch. {{ entry.chapter }}<template v-if="entry.manga.chapters"> / {{ entry.manga.chapters }}</template>
           </p>
-          <UiProgressBar :value="progressRatio(entry)" :label="`${entry.manga.title} reading progress`" />
+          <UiProgressBar :value="progressRatio(entry)" :label="`Progression de lecture de ${entry.manga.title}`" />
           <div class="continue__actions">
             <NuxtLink
               v-if="inAppPosition(entry.manga.id)"
               class="continue__resume"
               :to="`/read/${entry.manga.id}/${inAppPosition(entry.manga.id)!.chapterId}`"
             >
-              Resume here · ch. {{ inAppPosition(entry.manga.id)!.chapterNumber }}
+              Reprendre ici · ch. {{ inAppPosition(entry.manga.id)!.chapterNumber }}
               <UiIcon name="arrowRight" :size="16" />
             </NuxtLink>
             <a
@@ -47,14 +47,14 @@ const entries = computed(() => (ready.value ? continueReading(library.value, CON
               rel="noopener noreferrer external"
               @click="openOfficialPlatform({ mangaId: entry.manga.id, title: entry.manga.title, platformName: entry.preferredPlatform.name, nextChapter: entry.chapter + 1 })"
             >
-              Resume on {{ entry.preferredPlatform.name }}
+              Reprendre sur {{ entry.preferredPlatform.name }}
               <UiIcon name="arrowUpRight" :size="16" />
-              <span class="visually-hidden">(opens in a new tab)</span>
+              <span class="visually-hidden">(s’ouvre dans un nouvel onglet)</span>
             </a>
             <NuxtLink v-else class="continue__resume" :to="`${mangaPath(entry.manga)}#where-to-read`">
-              Choose where to read <UiIcon name="arrowRight" :size="16" />
+              Choisir où lire <UiIcon name="arrowRight" :size="16" />
             </NuxtLink>
-            <button type="button" class="continue__bump" :aria-label="`Mark chapter ${entry.chapter + 1} of ${entry.manga.title} as read`" @click="setProgress(entry.manga.id, entry.chapter + 1)">
+            <button type="button" class="continue__bump" :aria-label="`Marquer le chapitre ${entry.chapter + 1} de ${entry.manga.title} comme lu`" @click="setProgress(entry.manga.id, entry.chapter + 1)">
               +1 ch.
             </button>
           </div>

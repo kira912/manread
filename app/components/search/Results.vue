@@ -26,15 +26,15 @@ watch(
 )
 
 const countLabel = computed(() => {
-  if (total.value === null) return plural(items.value.length, 'title')
-  return `${compactNumber(total.value)} ${total.value === 1 ? 'title' : 'titles'}`
+  if (total.value === null) return plural(items.value.length, 'titre')
+  return `${compactNumber(total.value)} ${total.value <= 1 ? 'titre' : 'titres'}`
 })
 </script>
 
 <template>
   <div class="results">
     <p class="results__count label" role="status">
-      <template v-if="status === 'pending' && !items.length">Searching…</template>
+      <template v-if="status === 'pending' && !items.length">Recherche…</template>
       <template v-else-if="status !== 'error'">{{ countLabel }}</template>
     </p>
 
@@ -42,10 +42,10 @@ const countLabel = computed(() => {
 
     <MangaGridSkeleton v-else-if="status === 'pending' && !items.length" />
 
-    <UiEmptyState v-else-if="!items.length" title="Nothing on these shelves" glyph="無">
-      <p>No title matches every filter. Loosen one, or start over.</p>
+    <UiEmptyState v-else-if="!items.length" title="Rien sur ces étagères" glyph="無">
+      <p>Aucun titre ne correspond à tous les filtres. Assouplissez-en un, ou repartez de zéro.</p>
       <template #actions>
-        <UiButton variant="line" icon="close" @click="emit('reset')">Clear filters</UiButton>
+        <UiButton variant="line" icon="close" @click="emit('reset')">Effacer les filtres</UiButton>
       </template>
     </UiEmptyState>
 
@@ -59,10 +59,10 @@ const countLabel = computed(() => {
           :loading="loadingMore"
           @click="loadMore"
         >
-          {{ loadMoreFailed ? 'Retry loading more' : 'Load more' }}
+          {{ loadMoreFailed ? 'Réessayer de charger la suite' : 'Charger plus' }}
         </UiButton>
         <MangaGridSkeleton v-else-if="loadingMore" :count="6" />
-        <p v-else-if="!hasMore" class="label results__end">End of the index</p>
+        <p v-else-if="!hasMore" class="label results__end">Fin de l’index</p>
       </div>
     </template>
   </div>

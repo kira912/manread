@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { groupAvailabilityByPlatform, primaryOffer, type Availability } from '#shared/domain/availability'
+import { languageLabel } from '#shared/domain/labels'
 import type { MangaId } from '#shared/domain/manga'
 
 const props = defineProps<{ mangaId: MangaId; title: string; availability: readonly Availability[]; degraded: boolean }>()
@@ -16,14 +17,14 @@ function remember(platformId: string, platformName: string, url: string) {
 <template>
   <section id="where-to-read" class="where" aria-labelledby="where-heading">
     <header class="where__head">
-      <p class="label"><span class="where__dot" aria-hidden="true" /> Official sources only</p>
-      <h2 id="where-heading" class="display where__title">Where to read</h2>
+      <p class="label"><span class="where__dot" aria-hidden="true" /> Sources officielles uniquement</p>
+      <h2 id="where-heading" class="display where__title">Où lire</h2>
       <p class="where__note">
-        Manread doesn't host chapters. These links open the publisher or a licensed platform in a new tab — reading there supports the creators.
+        Ces liens ouvrent l’éditeur ou une plateforme sous licence dans un nouvel onglet. Y lire, c’est soutenir les auteurs.
       </p>
     </header>
 
-    <p v-if="degraded" class="where__degraded" role="status">Some sources couldn't be checked just now. The list may be incomplete.</p>
+    <p v-if="degraded" class="where__degraded" role="status">Certaines sources n’ont pas pu être vérifiées. La liste est peut-être incomplète.</p>
 
     <ol v-if="platforms.length" class="where__list" role="list">
       <li v-for="(platform, index) in platforms" :key="platform.platformId" class="where__platform">
@@ -37,14 +38,14 @@ function remember(platformId: string, platformName: string, url: string) {
         >
           <span class="where__index numeric" aria-hidden="true">{{ indexLabel(index) }}</span>
           <span class="where__name display">{{ platform.platformName }}</span>
-          <span class="where__lang label">{{ primaryOffer(platform)!.language ?? 'Original' }}</span>
+          <span class="where__lang label">{{ languageLabel(primaryOffer(platform)!.language) }}</span>
           <span class="where__cta">
-            Open <UiIcon name="arrowUpRight" :size="18" />
+            Ouvrir <UiIcon name="arrowUpRight" :size="18" />
           </span>
-          <span class="visually-hidden">— read {{ title }} on {{ platform.platformName }} (opens in a new tab)</span>
+          <span class="visually-hidden">— lire {{ title }} sur {{ platform.platformName }} (s’ouvre dans un nouvel onglet)</span>
         </a>
         <p v-if="platform.offers.length > 1" class="where__others">
-          <span class="label">Also in</span>
+          <span class="label">Aussi en</span>
           <template v-for="offer in platform.offers.slice(1)" :key="offer.url + offer.language">
             <a
               class="where__other link-underline"
@@ -53,16 +54,16 @@ function remember(platformId: string, platformName: string, url: string) {
               rel="noopener noreferrer external"
               @click="remember(platform.platformId, platform.platformName, offer.url)"
             >
-              {{ offer.language ?? 'Original' }}<span class="visually-hidden"> on {{ platform.platformName }} (opens in a new tab)</span>
+              {{ languageLabel(offer.language) }}<span class="visually-hidden"> sur {{ platform.platformName }} (s’ouvre dans un nouvel onglet)</span>
             </a>
           </template>
         </p>
       </li>
     </ol>
 
-    <UiEmptyState v-else title="No official source listed yet" glyph="無" heading-level="h3">
+    <UiEmptyState v-else title="Aucune source officielle pour l’instant" glyph="無" heading-level="h3">
       <p>
-        We only list publishers and licensed platforms. When {{ title }} gets an official release, it will appear here — add it to your library to keep it on your radar.
+        Nous ne listons que les éditeurs et les plateformes sous licence. Dès que {{ title }} sera publié officiellement, il apparaîtra ici : ajoutez-le à votre bibliothèque pour ne pas le perdre de vue.
       </p>
     </UiEmptyState>
   </section>

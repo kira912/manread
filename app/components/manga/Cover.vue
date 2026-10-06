@@ -24,7 +24,7 @@ const sources = computed(() => resolveSources(props.cover))
       :sizes="sizes"
       :width="COVER_WIDTHS.medium"
       :height="height"
-      :alt="decorative ? '' : `Cover of ${title}`"
+      :alt="decorative ? '' : `Couverture de ${title}`"
       :loading="priority || eager ? 'eager' : 'lazy'"
       :fetchpriority="priority ? 'high' : 'auto'"
       decoding="async"
