@@ -1,0 +1,10 @@
+{
+  "name": "Manread",
+  "short_name": "Manread",
+  "description": "An editorial index of manga, and every legal place to read them.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050506",
+  "theme_color": "#050506",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

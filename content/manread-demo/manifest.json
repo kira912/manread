@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "source": {
+    "id": "manread-demo",
+    "name": "Manread demo studio",
+    "license": {
+      "name": "CC0 1.0",
+      "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rightsHolder": "Manread demo studio"
+    }
+  },
+  "series": [
+    {
+      "catalog": {
+        "provider": "fixture",
+        "id": "9001"
+      },
+      "title": "Saltwater Archive",
+      "chapters": [
+        {
+          "id": "saltwater-archive-c1",
+          "number": 1,
+          "title": "What the tide returns",
+          "publishedAt": "2026-09-01",
+          "pages": [
+            {
+              "file": "001-8c830c2f.webp",
+              "width": 900,
+              "height": 1350
+            },
+            {
+              "file": "002-9a0c6ef6.webp",
+              "width": 900,
+              "height": 1350
+            },
+            {
+              "file": "003-7d658d9f.webp",
+              "width": 900,
+              "height": 1350
+            },
+            {
+              "file": "004-ceefe128.webp",
+              "width": 900,
+              "height": 1350
+            },
+            {
+              "file": "005-7bc575c7.webp",
+              "width": 900,
+              "height": 1350
+            },
+            {
+              "file": "006-6d944904.webp",
+              "width": 900,
+              "height": 1350
+            }
+          ]
+        },
+        {
+          "id": "saltwater-archive-c2",
+          "number": 2,
+          "title": "A letter, unsigned",
+          "publishedAt": "2026-09-01",
+          "pages": [
+            {
+              "file": "001-4ca6ecab.webp",
+              "width": 900,
+              "height": 1350
+            },
+            {
+              "file": "002-55e07054.webp",
+              "width": 900,
+              "height": 1350
+            },
+            {
+              "file": "003-f19346fe.webp",
+              "width": 900,
+              "height": 1350
+            },
+            {
+              "file": "004-f5a0bdf9.webp",
+              "width": 900,
+              "height": 1350
+            },
+            {
+              "file": "005-558caeb5.webp",
+              "width": 900,
+              "height": 1350
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "catalog": {
+        "provider": "fixture",
+        "id": "9007"
+      },
+      "title": "Late Bus to Haneul",
+      "chapters": [
+        {
+          "id": "late-bus-to-haneul-c1",
+          "number": 1,
+          "title": "Last stop",
+          "publishedAt": "2026-09-01",
+          "pages": [
+            {
+              "file": "001-8cd0a319.webp",
+              "width": 800,
+              "height": 2400
+            },
+            {
+              "file": "002-23e0912a.webp",
+              "width": 800,
+              "height": 2400
+            },
+            {
+              "file": "003-23a2d95b.webp",
+              "width": 800,
+              "height": 2400
+            },
+            {
+              "file": "004-65a180f9.webp",
+              "width": 800,
+              "height": 2400
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
