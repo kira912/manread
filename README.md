@@ -154,18 +154,25 @@ SSR for every public page; canonical URLs with 301s for wrong slugs; per-page ti
 
 ## Analytics & observability
 
-All analytics are free-tier, cookieless (no consent banner needed), and add no third-party requests unless configured.
+All analytics are free-tier and add no third-party requests unless configured. Everything is cookieless except Google Analytics 4, which is strictly opt-in behind a consent banner.
 
 | What you learn | Tool | Setup |
 | --- | --- | --- |
 | Visitors, page views, referrers, countries, devices | **Vercel Web Analytics** | Vercel dashboard › project › *Analytics* › Enable. Active automatically on Vercel deployments. |
 | Real-user Core Web Vitals per page | **Vercel Speed Insights** | Vercel dashboard › *Speed Insights* › Enable. |
 | What people do (product events) | **Umami Cloud** (free tier) | Create a site on cloud.umami.is, set `NUXT_PUBLIC_UMAMI_WEBSITE_ID`, redeploy. Honours Do Not Track. |
+| Audiences, acquisition, funnels (opt-in) | **Google Analytics 4** | Create a GA4 web stream, set `NUXT_PUBLIC_GA_MEASUREMENT_ID` (`G-…`) **at build time**, redeploy. In the stream's *Enhanced measurement* settings, turn off *Page changes based on browser history events* (Manread sends SPA page views itself). |
 | Search visibility, queries, indexing | **Google Search Console** / **Bing Webmaster Tools** | Add the property with the meta-tag method; set `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION` / `NUXT_PUBLIC_BING_SITE_VERIFICATION`; submit `/sitemap.xml`. |
 | Is the site up? | **UptimeRobot** or **Better Stack** (free) | HTTP monitor on `https://<domain>/api/health` (returns `degraded` when the catalog circuit is open). |
 | Server logs and errors | **Vercel Logs** | Built in. Structured JSON with request IDs; client errors are reported to the server and logged. |
 
-Product events (`app/composables/useAnalytics.ts`, typed): `search`, `search_no_results`, `library_add`, `favorite`, `reader_open`, `chapter_complete`, `outbound_platform`. Text values are trimmed to 60 characters. Events never include library contents, history or identifiers. On Vercel Pro, the same events also appear as Vercel custom events.
+Product events (`app/composables/useAnalytics.ts`, typed): `search`, `search_no_results`, `library_add`, `favorite`, `reader_open`, `chapter_complete`, `outbound_platform`. Text values are trimmed to 60 characters. Events never include library contents, history or identifiers. On Vercel Pro, the same events also appear as Vercel custom events. With GA4 consent, they are also sent as GA4 events (register `source`, `term`, `manga`, `platform`, `status`, `chapter`, `enabled` as custom dimensions to use them in reports).
+
+Google Analytics consent (CNIL-aligned):
+- When `NUXT_PUBLIC_GA_MEASUREMENT_ID` is set, a non-blocking banner offers *Accepter* / *Refuser* with equal weight. Nothing is loaded from Google until the visitor accepts.
+- The choice is stored in `localStorage` (`manread:analytics-consent`) for six months, then asked again. *Gérer les cookies* in the footer reopens it; withdrawing consent disables collection and deletes the `_ga` cookies.
+- gtag runs with Consent Mode (`ad_storage`, `ad_user_data`, `ad_personalization` denied), Google signals and ad personalisation off, and cookies capped at 13 months.
+- The CSP only allows `*.google-analytics.com`, `*.analytics.google.com` and `*.googletagmanager.com` when the ID is present at build time.
 
 Server side:
 - Structured JSON logs carry request IDs (`X-Request-Id`). Every API request is logged with route, status and duration.

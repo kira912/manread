@@ -1,5 +1,6 @@
 import { track as trackWithVercel } from '@vercel/analytics'
 import type { ReadingStatus } from '#shared/domain/library'
+import { sendGoogleAnalyticsEvent } from '~/infrastructure/analytics/google-analytics'
 
 type EventValue = string | number | boolean | null
 
@@ -31,6 +32,7 @@ export function trackEvent<Name extends keyof AnalyticsEvents>(name: Name, prope
   try {
     window.umami?.track(name, payload)
     trackWithVercel(name, payload)
+    sendGoogleAnalyticsEvent(name, payload)
   } catch (error) {
     console.warn('[analytics] event dropped', name, error)
   }

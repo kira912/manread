@@ -23,6 +23,14 @@ const principles = [
     title: 'Mesuré, pas surveillé.',
     body: 'Nous utilisons des statistiques anonymes et sans cookies (Vercel Web Analytics, Speed Insights et Umami) pour compter les visites, mesurer la vitesse des pages et voir quelles fonctionnalités servent : recherches, chapitres lus, plateformes ouvertes. Aucun pistage entre sites, aucun profil, et le réglage « Ne pas me pister » de votre navigateur est respecté.',
   },
+  ...(useAnalyticsConsent().measurementId
+    ? [
+        {
+          title: 'Google Analytics, seulement si vous le voulez.',
+          body: 'Si vous l’acceptez, Google Analytics mesure les mêmes usages avec des cookies (13 mois au plus) et transmet ces données à Google, sans signaux publicitaires ni personnalisation des annonces. Sans accord, rien n’est chargé depuis Google. Votre choix est conservé six mois sur cet appareil, et vous pouvez le modifier à tout moment via « Gérer les cookies » en bas de page.',
+        },
+      ]
+    : []),
 ]
 </script>
 

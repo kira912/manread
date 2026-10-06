@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { CONSENT_CHOICES, CONSENT_SCHEMA_VERSION } from '#shared/domain/consent'
 import { HISTORY_SCHEMA_VERSION, SEARCH_HISTORY_CAPACITY, VIEW_HISTORY_CAPACITY } from '#shared/domain/history'
 import { LIBRARY_SCHEMA_VERSION, READING_STATUSES } from '#shared/domain/library'
 import { MANGA_ORIGINS, MANGA_STATUSES } from '#shared/domain/manga'
@@ -58,6 +59,12 @@ export const readingPositionsSchema = z.object({
       }),
     )
     .refine(entries => Object.keys(entries).length <= READING_POSITIONS_CAPACITY),
+})
+
+export const consentSchema = z.object({
+  version: z.literal(CONSENT_SCHEMA_VERSION),
+  choice: z.enum(CONSENT_CHOICES).nullable(),
+  decidedAt: isoDate.nullable(),
 })
 
 export { readerPreferencesSchema }

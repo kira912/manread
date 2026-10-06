@@ -70,6 +70,7 @@
 
   --z-rail: 30;
   --z-dock: 40;
+  --z-consent: 50;
   --z-overlay: 60;
   --z-toast: 80;
 }

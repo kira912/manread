@@ -5,6 +5,9 @@ const isDev = process.env.NODE_ENV !== 'production'
 const isVercel = Boolean(process.env.VERCEL)
 const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 const umamiEnabled = Boolean(process.env.NUXT_PUBLIC_UMAMI_WEBSITE_ID)
+// GA4 is opt-in at runtime (consent banner); its hosts are only allowed when a measurement ID is configured at build time.
+const googleAnalyticsEnabled = Boolean(process.env.NUXT_PUBLIC_GA_MEASUREMENT_ID)
+const GOOGLE_ANALYTICS_HOSTS = ['https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com']
 
 const ANILIST_IMAGE_ORIGIN = 'https://s4.anilist.co'
 
@@ -70,6 +73,7 @@ export default defineNuxtConfig({
       telemetrySampleRate: isVercel ? 0 : 1,
       vercelInsights: isVercel,
       umamiWebsiteId: '',
+      gaMeasurementId: '',
       googleSiteVerification: '',
       bingSiteVerification: '',
     },
@@ -110,12 +114,13 @@ export default defineNuxtConfig({
         'script-src': ["'self'", "'nonce-{{nonce}}'", "'strict-dynamic'"],
         'script-src-attr': ["'none'"],
         'style-src': ["'self'", "'unsafe-inline'"],
-        'img-src': ["'self'", 'data:', ANILIST_IMAGE_ORIGIN],
+        'img-src': ["'self'", 'data:', ANILIST_IMAGE_ORIGIN, ...(googleAnalyticsEnabled ? GOOGLE_ANALYTICS_HOSTS : [])],
         'font-src': ["'self'"],
         'connect-src': [
           "'self'",
           ...(isDev ? ['ws:', 'wss:'] : []),
           ...(umamiEnabled ? ['https://gateway.umami.is', 'https://cloud.umami.is'] : []),
+          ...(googleAnalyticsEnabled ? GOOGLE_ANALYTICS_HOSTS : []),
         ],
         'manifest-src': ["'self'"],
         'worker-src': ["'none'"],

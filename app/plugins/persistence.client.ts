@@ -7,6 +7,7 @@ export default defineNuxtPlugin({
     const searchHistory = useSearchHistory()
     const readingPositions = useReadingPositions()
     const readerPreferences = useReaderPreferences()
+    const analyticsConsent = useAnalyticsConsent()
 
     onNuxtReady(() => {
       library.hydrate()
@@ -14,6 +15,7 @@ export default defineNuxtPlugin({
       searchHistory.hydrate()
       readingPositions.hydrate()
       readerPreferences.hydrate()
+      analyticsConsent.hydrate()
       ready.value = true
       document.documentElement.dataset.ready = 'true'
     })

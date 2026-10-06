@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const consent = useAnalyticsConsent()
+</script>
+
 <template>
   <footer class="footer">
     <div class="page footer__grid">
@@ -12,6 +16,7 @@
         <NuxtLink class="link-underline" to="/about">À propos &amp; sources</NuxtLink>
         <NuxtLink class="link-underline" to="/search">Tout parcourir</NuxtLink>
         <NuxtLink class="link-underline" to="/library">Votre bibliothèque</NuxtLink>
+        <button v-if="consent.measurementId" type="button" class="link-underline footer__consent" @click="consent.openSettings">Gérer les cookies</button>
       </nav>
     </div>
   </footer>
@@ -56,7 +61,13 @@
   color: var(--c-mist);
 }
 
-.footer__nav a {
+.footer__nav a,
+.footer__consent {
   padding-block: var(--s-2);
+}
+
+.footer__consent {
+  text-transform: inherit;
+  letter-spacing: inherit;
 }
 </style>
